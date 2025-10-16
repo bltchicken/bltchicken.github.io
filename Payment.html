@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Secure Payment</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/PsVvqy0T/hott.png">
+    <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/PsVvqy0T/hott.png">
+    <style>
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://cdn.jsdelivr.net/gh/sahibjotsaggu/San-Francisco-Pro-Fonts@master/SF-Pro-Display-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://cdn.jsdelivr.net/gh/sahibjotsaggu/San-Francisco-Pro-Fonts@master/SF-Pro-Display-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://cdn.jsdelivr.net/gh/sahibjotsaggu/San-Francisco-Pro-Fonts@master/SF-Pro-Display-Semibold.otf') format('opentype');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://cdn.jsdelivr.net/gh/sahibjotsaggu/San-Francisco-Pro-Fonts@master/SF-Pro-Display-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+    </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-color: #10b981;
+            --warning-color: #fbbf24;
+            --danger-color: #ef4444;
+            --card-bg: rgba(18, 18, 28, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+            padding: 0;
+            margin: 0;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, background 0.2s ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-outline.hover {
+            width: 60px;
+            height: 60px;
+            border-color: rgba(118, 75, 162, 0.8);
+            background: rgba(102, 126, 234, 0.15);
+        }
+
+        .cursor-dot.clicking {
+            transform: translate(-50%, -50%) scale(0.5);
+            background: #764ba2;
+        }
+
+        /* Loading animations */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(102, 126, 234, 0.2);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loader-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Skeleton loading for content */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Button loading state */
+        .submit-btn.loading {
+            pointer-events: none;
+            position: relative;
+            color: transparent;
+        }
+
+        .submit-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Fade in animation for elements */
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in-delay-1 { animation-delay: 0.1s; }
+        .fade-in-delay-2 { animation-delay: 0.2s; }
+        .fade-in-delay-3 { animation-delay: 0.3s; }
+        .fade-in-delay-4 { animation-delay: 0.4s; }
+
+        /* QR code loading */
+        .qr-loading {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.8) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 12px;
+        }
+
+        /* Animated background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(64, 224, 208, 0.1) 0%, transparent 50%);
+            animation: gradientMove 20s ease infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { 
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .checkout-container {
+            max-width: 1200px;
+            width: 100%;
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 50px 40px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .order-summary-sidebar {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .order-summary-sidebar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            letter-spacing: 0.3px;
+        }
+
+        .payment-details {
+            background: rgba(15, 15, 25, 0.4);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .payment-details::before {
+            display: none;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-top: 18px;
+            margin-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 16px;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .detail-value {
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: right;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .detail-value.amount {
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .trust-badges {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 14px;
+        }
+
+        .trust-badge-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .trust-badge-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(34, 197, 94, 0.25);
+            border-radius: 6px;
+            color: #6ee7b7;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .form-section {
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            color: #d1d5db;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: rgba(102, 126, 234, 0.25);
+            border: 1.5px solid rgba(102, 126, 234, 0.4);
+            border-radius: 50%;
+            color: #a5b4fc;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: help;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: lowercase;
+        }
+
+        .info-icon:hover {
+            background: rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.7);
+            transform: scale(1.15);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px) scale(0.95);
+            background: rgba(18, 18, 28, 0.98);
+            color: #e5e7eb;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: normal;
+            width: 300px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6),
+                        0 0 0 1px rgba(102, 126, 234, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 1000;
+            line-height: 1.6;
+            text-align: left;
+            text-transform: none;
+            letter-spacing: 0;
+            margin-bottom: 12px;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 7px solid transparent;
+            border-top-color: rgba(18, 18, 28, 0.98);
+        }
+
+        .info-icon:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-8px) scale(1);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="email"],
+        input[type="text"] {
+            width: 100%;
+            padding: 16px 18px;
+            padding-left: 50px;
+            background: rgba(15, 15, 25, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        input[type="email"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(15, 15, 25, 0.95);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15),
+                        0 8px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        input:focus + .input-icon {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .crypto-select {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .crypto-option {
+            display: flex;
+            align-items: center;
+            padding: 18px;
+            background: rgba(15, 15, 25, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crypto-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .crypto-option:hover::before {
+            left: 100%;
+        }
+
+        .crypto-option:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-4px) scale(1.02);
+            background: rgba(15, 15, 25, 0.8);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .crypto-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            box-shadow: 0 0 0 1px rgba(102, 126, 234, 0.3),
+                        0 8px 24px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .crypto-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .crypto-option:hover .crypto-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .btc { 
+            background: linear-gradient(135deg, #f7931a 0%, #ff9d00 100%);
+        }
+        .eth { 
+            background: linear-gradient(135deg, #627eea 0%, #8c9dff 100%);
+        }
+        .sol { 
+            background: linear-gradient(135deg, #9945ff 0%, #14f195 100%);
+        }
+        .ltc { 
+            background: linear-gradient(135deg, #345d9d 0%, #5b8ac4 100%);
+        }
+
+        .crypto-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .crypto-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .crypto-symbol {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .crypto-rate {
+            color: #6ee7b7;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .crypto-speed {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-top: 6px;
+        }
+
+        .speed-fast {
+            background: rgba(34, 197, 94, 0.2);
+            color: #6ee7b7;
+            border: 1.5px solid rgba(34, 197, 94, 0.4);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.1);
+        }
+
+        .speed-medium {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1.5px solid rgba(251, 191, 36, 0.4);
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.1);
+        }
+
+        .speed-slow {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1.5px solid rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
+        }
+
+        .radio-indicator {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .crypto-option.selected .radio-indicator {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .crypto-option.selected .radio-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: radioScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes radioScale {
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .fee-notice {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1.5px solid rgba(102, 126, 234, 0.25);
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 13px;
+            color: #c4b5fd;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .fee-notice-icon {
+            margin-right: 12px;
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px 36px;
+            background: var(--primary-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4),
+                        0 0 0 1px rgba(102, 126, 234, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover::after {
+            opacity: 1;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6),
+                        0 0 0 1px rgba(102, 126, 234, 0.2) inset,
+                        0 0 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .submit-btn:disabled:hover {
+            transform: none;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .submit-btn:disabled::before,
+        .submit-btn:disabled::after {
+            display: none;
+        }
+
+        .submit-btn-text {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn-icon {
+            font-size: 20px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .submit-btn:hover .submit-btn-icon {
+            transform: translateX(6px);
+        }
+
+        .security-notice {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .security-text {
+            color: var(--text-muted);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .security-text::before {
+            content: '🔒';
+            font-size: 16px;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* Payment Screen Styles */
+        .payment-screen {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        .payment-screen.show {
+            display: block;
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 45px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .merchant-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .merchant-logo {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        .merchant-details {
+            text-align: left;
+        }
+
+        .merchant-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        .merchant-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .payment-amount-header {
+            text-align: right;
+        }
+
+        .payment-amount-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .payment-amount-value {
+            font-size: 38px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .payment-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .payment-main {
+            flex: 1;
+        }
+
+        .payment-sidebar {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .payment-sidebar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .order-summary {
+            margin-bottom: 28px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-top: 16px;
+            margin-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .summary-value {
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: right;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .section-header {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .payment-instructions {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1.5px solid rgba(102, 126, 234, 0.25);
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 30px;
+            font-size: 14px;
+            color: #c4b5fd;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .timer-container {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1.5px solid rgba(239, 68, 68, 0.25);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.15);
+        }
+
+        .timer-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            width: 100%;
+            transform-origin: left;
+            animation: timerProgress 3600s linear forwards;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+        }
+
+        @keyframes timerProgress {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+
+        .timer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-label {
+            font-size: 13px;
+            color: #fca5a5;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timer-icon {
+            font-size: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.15);
+                opacity: 0.8;
+            }
+        }
+
+        .timer-display {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ef4444;
+            font-variant-numeric: tabular-nums;
+            display: flex;
+            gap: 2px;
+            letter-spacing: 1px;
+        }
+
+        .timer-digit {
+            display: inline-block;
+            min-width: 16px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .timer-separator {
+            opacity: 0.6;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 0.7; }
+            50%, 100% { opacity: 0.3; }
+        }
+
+        .timer-container.warning {
+            background: rgba(251, 191, 36, 0.12);
+            border-color: rgba(251, 191, 36, 0.35);
+            animation: warningPulse 2s ease-in-out infinite;
+        }
+
+        .timer-container.warning .timer-progress {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+        }
+
+        .timer-container.warning .timer-label,
+        .timer-container.warning .timer-display {
+            color: #fbbf24;
+        }
+
+        .timer-container.critical {
+            background: rgba(239, 68, 68, 0.18);
+            border-color: rgba(239, 68, 68, 0.5);
+            animation: criticalPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { box-shadow: 0 4px 16px rgba(251, 191, 36, 0.15); }
+            50% { box-shadow: 0 8px 32px rgba(251, 191, 36, 0.4); }
+        }
+
+        @keyframes criticalPulse {
+            0%, 100% { 
+                box-shadow: 0 4px 16px rgba(239, 68, 68, 0.15);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 8px 40px rgba(239, 68, 68, 0.5);
+                transform: scale(1.02);
+            }
+        }
+
+        .qr-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .qr-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 8px;
+            margin: 0 auto 18px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .qr-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .qr-code {
+            width: 220px;
+            height: 220px;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        .qr-helper-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .payment-info {
+            margin-bottom: 35px;
+        }
+
+        .info-item {
+            margin-bottom: 22px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .info-value {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 15, 25, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+        }
+
+        .info-value:hover {
+            border-color: rgba(102, 126, 234, 0.4);
+            background: rgba(15, 15, 25, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-btn {
+            background: var(--primary-gradient);
+            border: none;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 12px;
+            flex-shrink: 0;
+            font-weight: 700;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: var(--success-color);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .network-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(15, 15, 25, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .network-badge:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(15, 15, 25, 0.95);
+        }
+
+        .network-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .help-section {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1.5px solid rgba(34, 197, 94, 0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .help-section:hover {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .help-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(34, 197, 94, 0.25);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .help-content {
+            flex: 1;
+        }
+
+        .help-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #6ee7b7;
+            margin-bottom: 4px;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .help-text a {
+            color: #6ee7b7;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .help-text a:hover {
+            text-decoration: underline;
+            color: #10b981;
+        }
+
+        .powered-by {
+            text-align: center;
+            padding-top: 28px;
+            margin-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .powered-by a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .powered-by a:hover {
+            color: #667eea;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 13px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            transform: translateX(-4px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn:active {
+            transform: translateX(-2px);
+        }
+
+        @media (max-width: 1024px) {
+            .payment-content,
+            .checkout-content {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .payment-sidebar,
+            .order-summary-sidebar {
+                order: -1;
+                position: static;
+            }
+
+            .payment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+
+            .payment-amount-header {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                padding: 40px 25px;
+            }
+
+            .crypto-select {
+                grid-template-columns: 1fr;
+            }
+
+            .qr-code {
+                width: 180px;
+                height: 180px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .payment-amount-value {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-container {
+                padding: 30px 20px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .order-summary-sidebar,
+            .payment-sidebar {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading secure checkout...</div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+    
+    <div class="checkout-container" id="checkoutContainer">
+        <div id="checkoutForm">
+            <div class="header fade-in">
+                <div class="logo"><img src="https://i.ibb.co/PsVvqy0T/hott.png" alt="DumpClub" style="height: 40px; width: auto;"></div>
+                <div class="subtitle">Secure cryptocurrency checkout</div>
+                <div style="margin-top: 10px; font-size: 12px; color: rgba(255, 255, 255, 0.5); font-weight: 500;">Order #<span id="orderInvoiceId">DC-XXXX-XXXX</span></div>
+            </div>
+
+            <div class="checkout-content">
+                <div class="form-section">
+                    <div class="section-title fade-in fade-in-delay-1">Payment Information</div>
+
+            <form id="paymentForm">
+                        <div class="form-group fade-in fade-in-delay-2">
+                            <label for="email">
+                                EMAIL ADDRESS
+                                <span class="info-icon">
+                                    i
+                                    <span class="tooltip">Please provide a valid email address to receive your order. If you've entered an incorrect email, kindly contact our support team for assistance.</span>
+                                </span>
+                            </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="your@email.com" 
+                            required
+                        >
+                        <span class="input-icon">📧</span>
+                    </div>
+                </div>
+
+                        <div class="form-group fade-in fade-in-delay-3">
+                            <label>PAYMENT METHOD</label>
+                    <div class="crypto-select">
+                        <div class="crypto-option" data-crypto="btc">
+                            <div class="crypto-icon btc">₿</div>
+                            <div class="crypto-info">
+                                <div class="crypto-name">Bitcoin</div>
+                                <div class="crypto-symbol">BTC</div>
+                                        <div class="crypto-rate" data-amount="0.00104145">≈ 0.00104145 BTC</div>
+                                        <div class="crypto-speed speed-slow">⏱ 10-20 min</div>
+                            </div>
+                            <div class="radio-indicator"></div>
+                        </div>
+
+                        <div class="crypto-option" data-crypto="eth">
+                            <div class="crypto-icon eth">Ξ</div>
+                            <div class="crypto-info">
+                                <div class="crypto-name">Ethereum</div>
+                                <div class="crypto-symbol">ETH</div>
+                                        <div class="crypto-rate" data-amount="0.0285">≈ 0.0285 ETH</div>
+                                        <div class="crypto-speed speed-medium">⏱ 5-15 min</div>
+                            </div>
+                            <div class="radio-indicator"></div>
+                        </div>
+
+                                <div class="crypto-option" data-crypto="sol">
+                                    <div class="crypto-icon sol">◎</div>
+                            <div class="crypto-info">
+                                        <div class="crypto-name">Solana</div>
+                                        <div class="crypto-symbol">SOL</div>
+                                        <div class="crypto-rate" data-amount="0.4545">≈ 0.4545 SOL</div>
+                                        <div class="crypto-speed speed-fast">⏱ ~1 min</div>
+                            </div>
+                            <div class="radio-indicator"></div>
+                        </div>
+
+                        <div class="crypto-option" data-crypto="ltc">
+                            <div class="crypto-icon ltc">Ł</div>
+                            <div class="crypto-info">
+                                <div class="crypto-name">Litecoin</div>
+                                <div class="crypto-symbol">LTC</div>
+                                        <div class="crypto-rate" data-amount="0.9345">≈ 0.9345 LTC</div>
+                                        <div class="crypto-speed speed-fast">⏱ 2-5 min</div>
+                            </div>
+                            <div class="radio-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+
+                        <div class="fee-notice fade-in fade-in-delay-4">
+                    <span class="fee-notice-icon">💡</span>
+                    <span>Network fees are automatically calculated and included. Your payment will be confirmed within minutes.</span>
+                </div>
+
+                        <button type="submit" class="submit-btn fade-in fade-in-delay-4" id="submitBtn" disabled>
+                            <span class="submit-btn-text">
+                                Continue to Payment
+                                <span class="submit-btn-icon">→</span>
+                            </span>
+                </button>
+
+            <div class="security-notice">
+                <p class="security-text">
+                    Your payment is secured with 256-bit encryption
+                </p>
+            </div>
+                    </form>
+        </div>
+
+                <div class="order-summary-sidebar fade-in fade-in-delay-2">
+                    <div class="summary-title">Order Summary</div>
+                    
+                    <div class="payment-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Product</span>
+                            <span class="detail-value" id="checkoutProduct">Loading...</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Option</span>
+                            <span class="detail-value" id="checkoutOption">Loading...</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Unit Price</span>
+                            <span class="detail-value" id="checkoutUnitPrice">$0.00</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Quantity</span>
+                            <span class="detail-value" id="checkoutQuantity">1</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Total</span>
+                            <span class="detail-value amount" id="totalUSD">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>SSL Encrypted</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>PCI Compliant</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>Secure Payments</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>24/7 Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Screen -->
+        <div class="payment-screen" id="paymentScreen">
+            <button class="back-btn" id="backBtn">
+                ← Back to Checkout
+            </button>
+
+            <div class="payment-header">
+                <div class="merchant-info">
+                    <div class="merchant-logo">🛍️</div>
+                    <div class="merchant-details">
+                        <div class="merchant-name">SLAYER SHOP</div>
+                        <div class="merchant-subtitle">Secure Payment</div>
+                    </div>
+                </div>
+                <div class="payment-amount-header">
+                    <div class="payment-amount-label">TOTAL DUE</div>
+                    <div class="payment-amount-value" id="paymentTotalUSD">$99.99</div>
+                </div>
+            </div>
+
+            <div class="payment-content">
+                <div class="payment-main">
+                    <div class="payment-instructions">
+                        🔐 Scan the QR code with your crypto wallet or copy the payment details below. Payment will be confirmed automatically once received.
+                    </div>
+
+                    <div class="timer-container" id="timerContainer">
+                        <div class="timer-progress" id="timerProgress"></div>
+                        <div class="timer-content">
+                            <div class="timer-label">
+                                <span class="timer-icon">⏱️</span>
+                                Time Remaining
+                            </div>
+                            <div class="timer-display" id="timerDisplay">01:00:00</div>
+                        </div>
+                    </div>
+
+                    <div class="qr-section">
+                        <div class="qr-container">
+                            <img id="qrCode" src="Crypto%20QR/Bitcoin%20QR.png" alt="Bitcoin QR Code" class="qr-code" style="width: 220px; height: 220px; border-radius: 12px; padding: 0;">
+                        </div>
+                        <div class="qr-helper-text">📱 Scan with your wallet app</div>
+                    </div>
+
+                    <div class="section-header">Payment Details</div>
+
+                    <div class="payment-info">
+                        <div class="info-item">
+                            <div class="info-label" id="cryptoLabel">WALLET ADDRESS</div>
+                            <div class="info-value">
+                                <span id="cryptoAddress">bc1q0yu7z6muxtswpk8fdz9tj5dh8ffe4ps9kgfzqs</span>
+                                <button class="copy-btn" onclick="copyToClipboard('cryptoAddress', this)">Copy</button>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">EXACT AMOUNT</div>
+                            <div class="info-value">
+                                <span id="cryptoAmount">0.00234567</span>
+                                <button class="copy-btn" onclick="copyToClipboard('cryptoAmount', this)">Copy</button>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">NETWORK</div>
+                            <div class="network-badge">
+                                <div class="network-icon btc">₿</div>
+                                <span id="networkName">Bitcoin</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-section">
+                        <div class="help-icon">💬</div>
+                        <div class="help-content">
+                            <div class="help-title">Need Help?</div>
+                            <div class="help-text">
+                                Having issues? Contact us at <a href="mailto:support@hoodpay.io">support@hoodpay.io</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-sidebar">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Product</span>
+                            <span class="summary-value" id="summaryProduct">Loading...</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Option</span>
+                            <span class="summary-value" id="summaryOption">Loading...</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Unit Price</span>
+                            <span class="summary-value" id="summaryUnitPrice">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Quantity</span>
+                            <span class="summary-value" id="summaryQuantity">1</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Total</span>
+                            <span class="summary-value" id="summaryTotal">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>SSL Encrypted</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>PCI Compliant</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>Secure Payments</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <div class="trust-badge-icon">✓</div>
+                            <span>24/7 Support</span>
+                        </div>
+                    </div>
+
+                    <div class="powered-by">
+                        Powered by <a href="#">HoodPay</a><br>
+                        <a href="#">Terms</a> · <a href="#">Privacy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // ========================================
+        // LOAD ORDER DATA IMMEDIATELY
+        // ========================================
+        (function loadOrderData() {
+            // Generate random order invoice ID
+            function generateInvoiceId() {
+                const prefix = 'DC';
+                const part1 = Math.random().toString(36).substr(2, 4).toUpperCase();
+                const part2 = Math.random().toString(36).substr(2, 4).toUpperCase();
+                return `${prefix}-${part1}-${part2}`;
+            }
+            
+            const invoiceId = generateInvoiceId();
+            const orderInvoiceElement = document.getElementById('orderInvoiceId');
+            if (orderInvoiceElement) {
+                orderInvoiceElement.textContent = invoiceId;
+            }
+            
+            const orderData = JSON.parse(sessionStorage.getItem('orderData'));
+            
+            if (orderData) {
+                console.log('Order data found:', orderData);
+                
+                // Update payment total at top
+                const paymentTotalElement = document.getElementById('paymentTotalUSD');
+                if (paymentTotalElement) {
+                    paymentTotalElement.textContent = `$${orderData.total}`;
+                }
+                
+                // Update merchant name
+                const merchantName = document.querySelector('.merchant-name');
+                if (merchantName) {
+                    merchantName.textContent = orderData.product.toUpperCase();
+                }
+                
+                // Update merchant subtitle
+                const merchantSubtitle = document.querySelector('.merchant-subtitle');
+                if (merchantSubtitle) {
+                    merchantSubtitle.textContent = orderData.option;
+                }
+                
+                // Update checkout form sidebar (first page)
+                const checkoutProduct = document.getElementById('checkoutProduct');
+                const checkoutOption = document.getElementById('checkoutOption');
+                const checkoutUnitPrice = document.getElementById('checkoutUnitPrice');
+                const checkoutQuantity = document.getElementById('checkoutQuantity');
+                const totalUSD = document.getElementById('totalUSD');
+                
+                if (checkoutProduct) checkoutProduct.textContent = orderData.product;
+                if (checkoutOption) checkoutOption.textContent = orderData.option;
+                if (checkoutUnitPrice) checkoutUnitPrice.textContent = `$${orderData.pricePerUnit}`;
+                if (checkoutQuantity) checkoutQuantity.textContent = orderData.quantity;
+                if (totalUSD) totalUSD.textContent = `$${orderData.total}`;
+                
+                // Update payment screen sidebar (second page)
+                const summaryProduct = document.getElementById('summaryProduct');
+                const summaryOption = document.getElementById('summaryOption');
+                const summaryUnitPrice = document.getElementById('summaryUnitPrice');
+                const summaryQuantity = document.getElementById('summaryQuantity');
+                const summaryTotal = document.getElementById('summaryTotal');
+                
+                if (summaryProduct) summaryProduct.textContent = orderData.product;
+                if (summaryOption) summaryOption.textContent = orderData.option;
+                if (summaryUnitPrice) summaryUnitPrice.textContent = `$${orderData.pricePerUnit}`;
+                if (summaryQuantity) summaryQuantity.textContent = orderData.quantity;
+                if (summaryTotal) summaryTotal.textContent = `$${orderData.total}`;
+                
+                // Update crypto rate displays with actual order total
+                const orderTotal = parseFloat(orderData.total);
+                const cryptoRatesTemp = {
+                    btc: 96000,
+                    eth: 3500,
+                    sol: 220,
+                    ltc: 107
+                };
+                
+                // Update BTC rate
+                const btcRate = document.querySelector('[data-crypto="btc"] .crypto-rate');
+                if (btcRate) {
+                    const btcAmount = (orderTotal / cryptoRatesTemp.btc).toFixed(8);
+                    btcRate.textContent = `≈ ${btcAmount} BTC`;
+                    btcRate.dataset.amount = btcAmount;
+                }
+                
+                // Update ETH rate
+                const ethRate = document.querySelector('[data-crypto="eth"] .crypto-rate');
+                if (ethRate) {
+                    const ethAmount = (orderTotal / cryptoRatesTemp.eth).toFixed(8);
+                    ethRate.textContent = `≈ ${ethAmount} ETH`;
+                    ethRate.dataset.amount = ethAmount;
+                }
+                
+                // Update SOL rate
+                const solRate = document.querySelector('[data-crypto="sol"] .crypto-rate');
+                if (solRate) {
+                    const solAmount = (orderTotal / cryptoRatesTemp.sol).toFixed(8);
+                    solRate.textContent = `≈ ${solAmount} SOL`;
+                    solRate.dataset.amount = solAmount;
+                }
+                
+                // Update LTC rate
+                const ltcRate = document.querySelector('[data-crypto="ltc"] .crypto-rate');
+                if (ltcRate) {
+                    const ltcAmount = (orderTotal / cryptoRatesTemp.ltc).toFixed(8);
+                    ltcRate.textContent = `≈ ${ltcAmount} LTC`;
+                    ltcRate.dataset.amount = ltcAmount;
+                }
+            } else {
+                console.warn('No order data found in sessionStorage');
+            }
+        })();
+
+        // Create floating particles
+        function createParticles() {
+            const particleCount = 15;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // Page loader
+        window.addEventListener('load', () => {
+            const pageLoader = document.getElementById('pageLoader');
+            setTimeout(() => {
+                pageLoader.classList.add('hide');
+                createParticles();
+            }, 1000);
+        });
+
+        // Enhanced cursor follow animation
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorOutline = document.getElementById('cursorOutline');
+
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
+
+        // Update cursor position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Update dot immediately
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        // Mouse click effect
+        document.addEventListener('mousedown', () => {
+            cursorDot.classList.add('clicking');
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.9)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursorDot.classList.remove('clicking');
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+
+        // Smooth follow for outline
+        function animateOutline() {
+            const speed = 0.15;
+            outlineX += (mouseX - outlineX) * speed;
+            outlineY += (mouseY - outlineY) * speed;
+            
+            cursorOutline.style.left = outlineX + 'px';
+            cursorOutline.style.top = outlineY + 'px';
+            
+            requestAnimationFrame(animateOutline);
+        }
+        animateOutline();
+
+        // Add hover effect for interactive elements
+        const interactiveElements = document.querySelectorAll('button, a, input, .crypto-option, .copy-btn');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.classList.add('hover');
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.classList.remove('hover');
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+
+        // Hide custom cursor when leaving window
+        document.addEventListener('mouseleave', () => {
+            cursorDot.style.opacity = '0';
+            cursorOutline.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursorDot.style.opacity = '1';
+            cursorOutline.style.opacity = '1';
+        });
+
+        // Get order data reference (already loaded at top of script)
+        const orderData = JSON.parse(sessionStorage.getItem('orderData'));
+
+        const form = document.getElementById('paymentForm');
+        const emailInput = document.getElementById('email');
+        const submitBtn = document.getElementById('submitBtn');
+        const cryptoOptions = document.querySelectorAll('.crypto-option');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const paymentScreen = document.getElementById('paymentScreen');
+        const backBtn = document.getElementById('backBtn');
+        
+        let selectedCrypto = null;
+        let countdownInterval = null;
+
+        // USD to Crypto conversion rates (approximate market rates)
+        const cryptoRates = {
+            btc: 96000,  // $96,000 per BTC
+            eth: 3500,   // $3,500 per ETH
+            sol: 220,    // $220 per SOL
+            ltc: 107     // $107 per LTC
+        };
+
+        // Get base price from order data or use default
+        const basePrice = orderData ? parseFloat(orderData.total) : 99.99;
+
+        // Calculate crypto amounts based on current rates
+        function calculateCryptoAmount(usdAmount, cryptoSymbol) {
+            const rate = cryptoRates[cryptoSymbol];
+            return (usdAmount / rate).toFixed(8);
+        }
+
+        // Crypto addresses for different currencies
+        const cryptoData = {
+            btc: {
+                address: 'bc1q0yu7z6muxtswpk8fdz9tj5dh8ffe4ps9kgfzqs',
+                amount: calculateCryptoAmount(basePrice, 'btc'),
+                label: 'BTC Address',
+                network: 'Bitcoin',
+                icon: '₿'
+            },
+            eth: {
+                address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+                amount: calculateCryptoAmount(basePrice, 'eth'),
+                label: 'ETH Address',
+                network: 'Ethereum',
+                icon: 'Ξ'
+            },
+            sol: {
+                address: 'DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK',
+                amount: calculateCryptoAmount(basePrice, 'sol'),
+                label: 'SOL Address',
+                network: 'Solana',
+                icon: '◎'
+            },
+            ltc: {
+                address: 'LZK9T4LvJzhHNuxqFmXfAeWZxGi1pNLSt5',
+                amount: calculateCryptoAmount(basePrice, 'ltc'),
+                label: 'LTC Address',
+                network: 'Litecoin',
+                icon: 'Ł'
+            }
+        };
+
+        // Handle crypto selection with animation
+        cryptoOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                cryptoOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                const rateElement = this.querySelector('.crypto-rate');
+                selectedCrypto = {
+                    symbol: this.dataset.crypto,
+                    name: this.querySelector('.crypto-name').textContent,
+                    rate: rateElement.textContent,
+                    amount: rateElement.dataset.amount
+                };
+                validateForm();
+            });
+        });
+
+        // Validate email input
+        emailInput.addEventListener('input', validateForm);
+
+        function validateForm() {
+            const emailValid = emailInput.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+            const cryptoSelected = selectedCrypto !== null;
+            
+            submitBtn.disabled = !(emailValid && cryptoSelected);
+        }
+
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value;
+            const crypto = selectedCrypto;
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+
+            // Simulate payment processing
+            setTimeout(() => {
+                // Hide checkout form and show payment screen
+                checkoutForm.style.display = 'none';
+                paymentScreen.classList.add('show');
+                
+                // Setup payment screen with selected crypto
+                setupPaymentScreen(crypto.symbol);
+                
+                // Reset button
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = true;
+            }, 1200);
+        });
+
+        // Back button handler
+        backBtn.addEventListener('click', function() {
+            // Check if we're on the payment screen
+            if (paymentScreen.classList.contains('show')) {
+                paymentScreen.classList.remove('show');
+                checkoutForm.style.display = 'block';
+                
+                // Clear timer
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+                
+                // Reset form
+                form.reset();
+                cryptoOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedCrypto = null;
+            } else {
+                // If on checkout form, go back to shop
+                window.location.href = 'Home.html';
+            }
+        });
+
+        // Setup payment screen
+        function setupPaymentScreen(cryptoSymbol) {
+            const data = cryptoData[cryptoSymbol];
+            
+            // Update labels and values
+            document.getElementById('cryptoLabel').textContent = data.label;
+            document.getElementById('cryptoAddress').textContent = data.address;
+            document.getElementById('cryptoAmount').textContent = data.amount;
+            document.getElementById('networkName').textContent = data.network;
+            
+            // Update network icon
+            const networkIcon = document.querySelector('.network-icon');
+            networkIcon.className = 'network-icon ' + cryptoSymbol;
+            networkIcon.textContent = data.icon;
+            
+            // Generate QR code with crypto-specific image
+            generateQRCode(cryptoSymbol);
+            
+            // Start countdown timer (1 hour)
+            startCountdown(60 * 60);
+        }
+
+        // Generate QR code
+        function generateQRCode(cryptoSymbol) {
+            const qrImage = document.getElementById('qrCode');
+            const container = qrImage.parentElement;
+            
+            // QR code images for different cryptocurrencies
+            const qrImages = {
+                btc: 'Crypto%20QR/Bitcoin%20QR.png',
+                sol: 'Crypto%20QR/Solana%20QR.png',
+                eth: 'Crypto%20QR/Ethereum%20QR.png',
+                ltc: 'Crypto%20QR/Bitcoin%20QR.png' // Use Bitcoin QR as default for LTC
+            };
+            
+            const qrImageSrc = qrImages[cryptoSymbol] || 'Crypto%20QR/Bitcoin%20QR.png';
+            const cryptoNames = {
+                btc: 'Bitcoin',
+                eth: 'Ethereum',
+                sol: 'Solana',
+                ltc: 'Litecoin'
+            };
+            const cryptoName = cryptoNames[cryptoSymbol] || 'Crypto';
+            
+            // Show loading state
+            container.innerHTML = '<div class="qr-loading"></div>';
+            
+            // Simulate QR generation delay
+            setTimeout(() => {
+                // Replace with static QR code image
+                container.innerHTML = `<img id="qrCode" src="${qrImageSrc}" alt="${cryptoName} QR Code" class="qr-code" style="width: 220px; height: 220px; border-radius: 12px; padding: 0;">`;
+            }, 600);
+        }
+
+        // Countdown timer with animations
+        function startCountdown(seconds) {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            let timeLeft = seconds;
+            const timerDisplay = document.getElementById('timerDisplay');
+            const timerContainer = document.getElementById('timerContainer');
+            const totalSeconds = seconds;
+            
+            function updateTimer() {
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const secs = timeLeft % 60;
+                
+                const timeString = 
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(secs).padStart(2, '0');
+                
+                // Animate digits
+                timerDisplay.innerHTML = timeString.split('').map((char, index) => {
+                    if (char === ':') {
+                        return `<span class="timer-separator">${char}</span>`;
+                    }
+                    return `<span class="timer-digit">${char}</span>`;
+                }).join('');
+                
+                // Change colors based on time remaining
+                if (timeLeft <= 300 && timeLeft > 60) { // Last 5 minutes
+                    timerContainer.classList.add('warning');
+                    timerContainer.classList.remove('critical');
+                } else if (timeLeft <= 60) { // Last minute
+                    timerContainer.classList.add('critical');
+                    timerContainer.classList.remove('warning');
+                } else {
+                    timerContainer.classList.remove('warning', 'critical');
+                }
+                
+                timeLeft--;
+                
+                if (timeLeft < 0) {
+                    clearInterval(countdownInterval);
+                    timerDisplay.innerHTML = '<span style="font-size: 18px;">⏱️ EXPIRED</span>';
+                    timerContainer.classList.add('critical');
+                }
+            }
+            
+            updateTimer(); // Initial call
+            countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(elementId, button) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✓ Copied';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
