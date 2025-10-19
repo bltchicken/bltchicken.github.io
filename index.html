@@ -1,0 +1,3024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>DIGITAL ACCOUNTS // SHOP</title>
+    
+    <!-- San Francisco Pro Fonts -->
+    <style>
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://github.com/sahibjotsaggu/San-Francisco-Pro-Fonts/raw/refs/heads/master/SF-Pro-Display-Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://github.com/sahibjotsaggu/San-Francisco-Pro-Fonts/raw/refs/heads/master/SF-Pro-Display-LightItalic.otf') format('opentype');
+            font-weight: 300;
+            font-style: italic;
+        }
+    </style>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Subtle gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: 40px 30px;
+            }
+        }
+
+        header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 0 30px;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .user-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .user-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .user-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .user-icon:hover svg {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.hide {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .modal-content {
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 0;
+            max-width: 500px;
+            width: 95%;
+            max-height: 90vh;
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 480px) {
+            .modal-content {
+                width: 90%;
+                border-radius: 20px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .modal-content {
+                margin: 0;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .modal-header {
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 480px) {
+            .modal-header {
+                padding: 28px 28px 22px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .modal-header {
+                padding: 32px 32px 24px;
+            }
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            padding-right: 40px;
+            text-align: center;
+        }
+
+        @media (min-width: 480px) {
+            .modal-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .modal-title {
+                font-size: 26px;
+            }
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+
+        .product-stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sales-count {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stars {
+            color: #4c40e0;
+            font-size: 14px;
+            text-shadow: 0 0 4px rgba(76, 64, 224, 0.3);
+        }
+
+        .rating-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        /* Checkout Modal Styles */
+        .checkout-content {
+            max-width: 500px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-content {
+                max-width: 95%;
+                width: 95%;
+                max-height: 90vh;
+                margin: 20px auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-content {
+                max-width: 98%;
+                width: 98%;
+                margin: 10px auto;
+            }
+        }
+
+        .checkout-header {
+            text-align: center;
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .checkout-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .checkout-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .checkout-body {
+            padding: 24px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-header {
+                padding: 20px 16px 16px;
+            }
+            
+            .checkout-title {
+                font-size: 22px;
+            }
+            
+            .checkout-body {
+                padding: 20px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-header {
+                padding: 16px 12px 12px;
+            }
+            
+            .checkout-title {
+                font-size: 20px;
+            }
+            
+            .checkout-subtitle {
+                font-size: 12px;
+            }
+            
+            .checkout-body {
+                padding: 16px 12px;
+            }
+        }
+
+        .order-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .order-summary h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .order-summary {
+                padding: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .order-summary h3 {
+                font-size: 15px;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .order-summary {
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+            
+            .order-summary h3 {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            margin-right: 12px;
+        }
+
+        .item-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 3px;
+            line-height: 1.3;
+        }
+
+        .item-variant {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.3;
+        }
+
+        .item-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        @media (max-width: 480px) {
+            .item-name {
+                font-size: 13px;
+            }
+            
+            .item-variant {
+                font-size: 11px;
+            }
+            
+            .item-price {
+                font-size: 13px;
+            }
+            
+            .order-total {
+                font-size: 15px;
+            }
+        }
+
+        .payment-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .payment-section h3 {
+                font-size: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .payment-option {
+                padding: 12px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-section h3 {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            
+            .payment-option {
+                padding: 10px 12px;
+            }
+        }
+
+        .payment-option.active {
+            background: rgba(76, 64, 224, 0.1);
+            border-color: #4c40e0;
+            box-shadow: 0 0 20px rgba(76, 64, 224, 0.2);
+        }
+
+        .payment-option.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .payment-option:hover:not(.disabled) {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .payment-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-right: 12px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .payment-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .payment-option.active .payment-icon {
+            background: rgba(76, 64, 224, 0.1);
+            border: 1px solid #4c40e0;
+        }
+
+        .payment-option.disabled .payment-logo {
+            opacity: 0.4;
+            filter: grayscale(100%);
+        }
+
+        .payment-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .payment-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .payment-discount {
+            font-size: 11px;
+            color: #4c40e0;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .payment-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+                margin-right: 10px;
+            }
+            
+            .payment-name {
+                font-size: 13px;
+            }
+            
+            .payment-discount {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 13px;
+                margin-right: 8px;
+            }
+            
+            .payment-name {
+                font-size: 12px;
+            }
+            
+            .payment-discount {
+                font-size: 9px;
+            }
+        }
+
+        .checkout-footer {
+            display: flex;
+            gap: 12px;
+            padding: 20px 20px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4c40e0 0%, #667eea 100%);
+            color: #fff;
+            border: none;
+            flex: 2;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3d32c7 0%, #5a6fd8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 64, 224, 0.3);
+        }
+
+        /* Crypto Modal Styles */
+        .crypto-content {
+            max-width: 500px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .crypto-header {
+            text-align: center;
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .crypto-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .crypto-amount {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4c40e0;
+            margin-bottom: 4px;
+        }
+
+        .crypto-discount {
+            font-size: 12px;
+            color: #4c40e0;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .crypto-body {
+            padding: 24px 20px;
+        }
+
+        .crypto-search {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4c40e0;
+            box-shadow: 0 0 0 2px rgba(76, 64, 224, 0.2);
+        }
+
+        .search-hint {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0;
+        }
+
+        .crypto-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .crypto-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .crypto-option.loading .crypto-amount-crypto {
+            opacity: 0.5;
+            position: relative;
+        }
+
+        .crypto-option.loading .crypto-amount-crypto::after {
+            content: 'Loading...';
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .crypto-option:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .crypto-option.selected {
+            background: rgba(76, 64, 224, 0.1);
+            border-color: #4c40e0;
+            box-shadow: 0 0 20px rgba(76, 64, 224, 0.2);
+        }
+
+        .crypto-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .crypto-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .crypto-symbol {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .crypto-name {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .crypto-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .crypto-amount-crypto {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .crypto-time-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .crypto-time-badge.fast {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .crypto-time-badge.medium {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .crypto-time-badge.slow {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .device-notice {
+            text-align: center;
+            padding: 16px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .device-notice p {
+            font-size: 12px;
+            color: #ffc107;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Crypto Payment Modal Styles */
+        .crypto-payment-content {
+            max-width: 500px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .crypto-payment-header {
+            text-align: center;
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .crypto-payment-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .crypto-payment-amount {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4c40e0;
+            margin-bottom: 4px;
+        }
+
+        .crypto-payment-body {
+            padding: 24px 20px;
+        }
+
+        .selected-crypto-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .qr-code-section {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .crypto-qr-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .crypto-qr-code {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .crypto-payment-details {
+            flex-grow: 1;
+        }
+
+        .crypto-payment-symbol {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .crypto-payment-name {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .payment-timer {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ff6b6b;
+            font-family: monospace;
+        }
+
+        .payment-amount-crypto {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .payment-instructions {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .payment-instructions p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 12px;
+        }
+
+        .wallet-address {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #4c40e0;
+            word-break: break-all;
+            margin-bottom: 16px;
+        }
+
+        .terms-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .terms-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .terms-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .terms-section li {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .terms-section li::before {
+            content: "•";
+            color: #4c40e0;
+            position: absolute;
+            left: 0;
+        }
+
+        .blockchain-monitoring {
+            text-align: center;
+            margin: 20px 0;
+            padding: 12px;
+            background: rgba(76, 64, 224, 0.1);
+            border: 1px solid rgba(76, 64, 224, 0.2);
+            border-radius: 8px;
+        }
+
+        .blockchain-monitoring p {
+            color: #4c40e0;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(76, 64, 224, 0.3);
+            border-top: 2px solid #4c40e0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-spinner-small {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .crypto-payment-footer {
+            display: flex;
+            gap: 12px;
+            padding: 20px 20px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            justify-content: center;
+        }
+
+
+        .crypto-footer {
+            display: flex;
+            gap: 12px;
+            padding: 20px 20px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-footer {
+                padding: 16px 16px 20px;
+                gap: 10px;
+            }
+            
+            .btn-secondary, .btn-primary {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-footer {
+                padding: 12px 12px 16px;
+                gap: 8px;
+            }
+            
+            .btn-secondary, .btn-primary {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+
+        .modal-body {
+            padding: 20px 16px;
+            overflow-y: auto;
+            flex: 1;
+            max-height: calc(90vh - 200px);
+        }
+
+        @media (min-width: 480px) {
+            .modal-body {
+                padding: 24px 24px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .modal-body {
+                padding: 28px 32px;
+            }
+        }
+
+        .modal-info {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .modal-info p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .modal-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .option-group {
+            margin-bottom: 24px;
+        }
+
+        .option-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Custom Dropdown Styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-trigger {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+        }
+
+        .dropdown-trigger:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .dropdown-trigger.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .dropdown-arrow {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .dropdown-trigger.active .dropdown-arrow {
+            transform: rotate(180deg);
+            opacity: 1;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        .dropdown-item.selected {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .dropdown-item.selected::before {
+            content: "✓";
+            margin-right: 8px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .quantity-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .quantity-input {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .quantity-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .price-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .price-row:last-child {
+            margin-bottom: 0;
+            padding-top: 16px;
+            margin-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .modal-footer {
+            padding: 0 32px 32px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .modal-footer {
+                padding: 0 20px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-footer {
+                padding: 0 16px 16px;
+            }
+        }
+
+        .btn-purchase {
+            width: 100%;
+            padding: 16px 28px;
+            background: #fff;
+            border: none;
+            color: #000;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-purchase:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-purchase:active {
+            transform: translateY(0);
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 15px;
+            max-width: 150px;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        @media (min-width: 480px) {
+            h1 {
+                font-size: 26px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        .tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            margin-top: 20px;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .marquee {
+            display: flex;
+            white-space: nowrap;
+            animation: scroll 30s linear infinite;
+        }
+
+        .marquee-text {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            padding: 0 30px;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .badges-container {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            justify-content: flex-start;
+        }
+
+        .hot-badge {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #000000;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: subtlePulse 2s ease-in-out infinite;
+        }
+
+        .hot-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .hot-badge:hover::before {
+            left: 100%;
+        }
+
+        .hot-badge:hover {
+            transform: translateY(-1px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .multiple-badge {
+            background: linear-gradient(135deg, #000000 0%, #212529 100%);
+            color: #ffffff;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: subtleFloat 3s ease-in-out infinite;
+        }
+
+        .multiple-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .multiple-badge:hover::before {
+            left: 100%;
+        }
+
+        .multiple-badge:hover {
+            transform: translateY(-1px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #212529 0%, #343a40 100%);
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes subtleFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-2px);
+            }
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 480px) {
+            .products {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .products {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 24px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .products {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 28px;
+            }
+        }
+
+        .product {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 28px 28px 28px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .product:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, 0.08);
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            aspect-ratio: 1;
+            margin: 0 auto 16px auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        @media (min-width: 480px) {
+            .product-thumbnail {
+                max-width: 300px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .product-thumbnail {
+                max-width: 320px;
+            }
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+            letter-spacing: -0.5px;
+            padding-right: 0;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 480px) {
+            .product-name {
+                font-size: 20px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .product-name {
+                font-size: 22px;
+            }
+        }
+
+        .product-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+            line-height: 1.7;
+            display: none;
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .product-price {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            font-style: italic;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 480px) {
+            .product-price {
+                font-size: 18px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .product-price {
+                font-size: 20px;
+            }
+        }
+
+        .stock {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .supplier-tag {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 16px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .btn {
+            background: #fff;
+            border: none;
+            color: #000;
+            padding: 12px 20px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            width: 100%;
+            letter-spacing: 0.3px;
+        }
+
+        @media (min-width: 480px) {
+            .btn {
+                padding: 14px 24px;
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .btn {
+                padding: 14px 28px;
+            }
+        }
+
+        .btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        footer p {
+            margin: 8px 0;
+        }
+
+        /* Additional mobile optimizations */
+        @media (max-width: 480px) {
+            header {
+                padding: 20px 0 20px;
+                margin-bottom: 40px;
+            }
+            
+            .logo {
+                max-width: 120px;
+            }
+            
+            .marquee-text {
+                font-size: 10px;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="user-icon" onclick="showGuestInfo()">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                </svg>
+            </div>
+            <img src="images/logos/DC Logo.png" alt="Logo" class="logo">
+            <p class="tagline">Your Plug's Plug • Handmade KYC Accounts • Cheapest Prices</p>
+            <div class="marquee-container">
+                <div class="marquee">
+                    <span class="marquee-text">TRUSTED BY 300+ FELONS • HANDMADE KYC ACCOUNTS • INSTANT DELIVERY • 24/7 SUPPORT • BULK DISCOUNTS AVAILABLE • VERIFIED ACCOUNTS • </span>
+                    <span class="marquee-text">TRUSTED BY 300+ FELONS • HANDMADE KYC ACCOUNTS • INSTANT DELIVERY • 24/7 SUPPORT • BULK DISCOUNTS AVAILABLE • VERIFIED ACCOUNTS • </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Guest Info Modal -->
+        <div id="guestModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeGuestModal()">×</button>
+                <div class="modal-header">
+                    <div class="modal-title">Guest Checkout</div>
+                    <div class="modal-subtitle">No account required</div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-info">
+                        <p>This site doesn't allow logging in. Everything is purchased as a guest for maximum privacy and speed.</p>
+                    </div>
+                    <div class="option-group">
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255, 255, 255, 0.7);">
+                                <span style="color: #fff; font-weight: 700;">✓</span> Temporary emails accepted
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255, 255, 255, 0.7);">
+                                <span style="color: #fff; font-weight: 700;">✓</span> No account registration needed
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255, 255, 255, 0.7);">
+                                <span style="color: #fff; font-weight: 700;">✓</span> Instant delivery to your inbox
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255, 255, 255, 0.7);">
+                                <span style="color: #fff; font-weight: 700;">✓</span> Complete anonymity
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255, 255, 255, 0.4); font-size: 13px;">Simply provide an email at checkout to receive your order.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkoutModal" class="modal">
+            <div class="modal-content checkout-content">
+                <button class="modal-close" onclick="closeCheckoutModal()">×</button>
+                <div class="checkout-header">
+                    <h2 class="checkout-title">Complete Your Order</h2>
+                    <p class="checkout-subtitle">Review your order and select payment method</p>
+                </div>
+                
+                <div class="checkout-body">
+                    <div class="order-summary">
+                        <h3>Order Details</h3>
+                        <div class="order-item">
+                            <div class="item-info">
+                                <span class="item-name" id="checkoutProductName">Product Name</span>
+                                <span class="item-variant" id="checkoutVariant">Variant</span>
+                            </div>
+                            <div class="item-price" id="checkoutPrice">$0.00</div>
+                        </div>
+                        <div class="order-total">
+                            <span>Total:</span>
+                            <span id="checkoutTotal">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-section">
+                        <h3>Select Payment Processor</h3>
+                        <div class="payment-options">
+                            <div class="payment-option active" data-method="crypto">
+                                <div class="payment-icon">
+                                    <img src="images/payment/Crypto Payment.png" alt="Crypto" class="payment-logo">
+                                </div>
+                                <div class="payment-info">
+                                    <span class="payment-name">Crypto</span>
+                                    <span class="payment-discount">5% Off</span>
+                                </div>
+                            </div>
+                            <div class="payment-option disabled" data-method="zelle">
+                                <div class="payment-icon">
+                                    <img src="images/payment/Zelle Payment.png" alt="Zelle" class="payment-logo">
+                                </div>
+                                <div class="payment-info">
+                                    <span class="payment-name">Zelle</span>
+                                </div>
+                            </div>
+                            <div class="payment-option disabled" data-method="venmo">
+                                <div class="payment-icon">
+                                    <img src="images/payment/Venmo Payment.png" alt="Venmo" class="payment-logo">
+                                </div>
+                                <div class="payment-info">
+                                    <span class="payment-name">Venmo</span>
+                                </div>
+                            </div>
+                            <div class="payment-option disabled" data-method="chime">
+                                <div class="payment-icon">
+                                    <img src="images/payment/Chime Payment.png" alt="Chime" class="payment-logo">
+                                </div>
+                                <div class="payment-info">
+                                    <span class="payment-name">Chime</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="checkout-footer">
+                    <button class="btn btn-secondary" onclick="closeCheckoutModal()">Back</button>
+                    <button class="btn btn-primary" onclick="processPayment()">Pay with Crypto</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crypto Payment Modal -->
+        <div id="cryptoPaymentModal" class="modal">
+            <div class="modal-content crypto-payment-content">
+                <button class="modal-close" onclick="closeCryptoPaymentModal()">×</button>
+                <div class="crypto-payment-header">
+                    <h2 class="crypto-payment-title">Crypto Payment</h2>
+                    <div class="crypto-payment-amount" id="cryptoPaymentAmount">$0.00 USD</div>
+                </div>
+                
+                <div class="crypto-payment-body">
+                    <div class="selected-crypto-info" id="selectedCryptoInfo">
+                        <div class="crypto-payment-details">
+                            <div class="crypto-payment-symbol" id="cryptoPaymentSymbol">SOL</div>
+                            <div class="crypto-payment-name" id="cryptoPaymentName">Solana</div>
+                        </div>
+                        <div class="payment-timer" id="paymentTimer">01:00:00</div>
+                    </div>
+                    
+                    <div class="qr-code-section">
+                        <div class="crypto-qr-container" id="cryptoQrContainer">
+                            <img id="cryptoQrCode" src="" alt="QR Code" class="crypto-qr-code">
+                        </div>
+                    </div>
+                    
+                    <div class="payment-amount-crypto" id="paymentAmountCrypto">0.00000000 BTC</div>
+                    
+                    <div class="payment-instructions">
+                        <p>Send exactly this amount to this address:</p>
+                        <div class="wallet-address" id="walletAddress">J9vUN3X8t5ELjoMLCPszwrnMCDsLhXAbp33tRCm3kssr</div>
+                    </div>
+                    
+                    <div class="blockchain-monitoring">
+                        <p id="blockchainText">We're checking the blockchain for your transaction and will have an update in <span id="blockchainCountdown">20</span> seconds.</p>
+                        <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="terms-section">
+                        <h4>Terms and Instructions</h4>
+                        <ul>
+                            <li>Send the exact amount shown above</li>
+                            <li>Payment must be completed within the time limit</li>
+                            <li>Do not send from an exchange</li>
+                            <li>Contact support if you have any issues</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="crypto-payment-footer">
+                    <button class="btn btn-secondary" onclick="closeCryptoPaymentModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crypto Selection Modal -->
+        <div id="cryptoModal" class="modal">
+            <div class="modal-content crypto-content">
+                <button class="modal-close" onclick="closeCryptoModal()">×</button>
+                <div class="crypto-header">
+                    <h2 class="crypto-title">Select Cryptocurrency</h2>
+                    <div class="crypto-amount" id="cryptoAmount">$95.00 USD</div>
+                    <div class="crypto-discount">5% discount applied to crypto payments</div>
+                </div>
+                
+                <div class="crypto-body">
+                    <div class="crypto-search">
+                        <input type="text" id="cryptoSearch" placeholder="Search cryptocurrencies..." class="search-input">
+                        <p class="search-hint">Enter a cryptocurrency name or symbol to filter the list below</p>
+                    </div>
+                    
+                    <div class="crypto-list">
+                        <div class="crypto-option" data-crypto="SOL">
+                            <div class="crypto-icon">◎</div>
+                            <div class="crypto-info">
+                                <div class="crypto-symbol">SOL</div>
+                                <div class="crypto-name">Solana</div>
+                            </div>
+                            <div class="crypto-details">
+                                <div class="crypto-amount-crypto">0.50672651 SOL</div>
+                                <div class="crypto-time-badge fast">&lt;1 min</div>
+                            </div>
+                        </div>
+                        
+                        <div class="crypto-option" data-crypto="BTC">
+                            <div class="crypto-icon">₿</div>
+                            <div class="crypto-info">
+                                <div class="crypto-symbol">BTC</div>
+                                <div class="crypto-name">Bitcoin</div>
+                            </div>
+                            <div class="crypto-details">
+                                <div class="crypto-amount-crypto">0.00088715 BTC</div>
+                                <div class="crypto-time-badge slow">2-60 min</div>
+                            </div>
+                        </div>
+                        
+                        <div class="crypto-option" data-crypto="LTC">
+                            <div class="crypto-icon">Ł</div>
+                            <div class="crypto-info">
+                                <div class="crypto-symbol">LTC</div>
+                                <div class="crypto-name">Litecoin</div>
+                            </div>
+                            <div class="crypto-details">
+                                <div class="crypto-amount-crypto">1.04051443 LTC</div>
+                                <div class="crypto-time-badge medium">1-5 min</div>
+                            </div>
+                        </div>
+                        
+                        <div class="crypto-option" data-crypto="ETH">
+                            <div class="crypto-icon">Ξ</div>
+                            <div class="crypto-info">
+                                <div class="crypto-symbol">ETH</div>
+                                <div class="crypto-name">Ethereum</div>
+                            </div>
+                            <div class="crypto-details">
+                                <div class="crypto-amount-crypto">0.024414 ETH</div>
+                                <div class="crypto-time-badge fast">&lt;2 min</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="crypto-footer">
+                    <button class="btn btn-secondary" onclick="closeCryptoModal()">Back</button>
+                    <button class="btn btn-primary" id="confirmCryptoBtn" onclick="confirmCryptoSelection()" disabled>Confirm Selection</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchase Modal -->
+        <div id="purchaseModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closePurchaseModal()">×</button>
+                <div class="modal-header">
+                    <div class="modal-title" id="purchaseProductName">Product Name</div>
+                    <div class="modal-subtitle">Configure your order</div>
+                    <div class="product-stats" id="productStats">
+                        <span class="sales-count">Product sold 4 times</span>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-text">5 (1 review)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-info">
+                        <p id="purchaseProductDesc">Product description will appear here.</p>
+                    </div>
+
+                    <div class="option-group">
+                        <label class="option-label">Select Variant</label>
+                        <div class="custom-dropdown" id="variantDropdown">
+                            <div class="dropdown-trigger" onclick="toggleDropdown()">
+                                <span id="selectedVariant">Basic - $10.00</span>
+                                <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6,9 12,15 18,9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="dropdown-menu" id="dropdownMenu">
+                                <div class="dropdown-item selected" data-value="basic" data-price="10" onclick="selectVariant(this)">
+                                    Basic - $10.00
+                                </div>
+                                <div class="dropdown-item" data-value="premium" data-price="15" onclick="selectVariant(this)">
+                                    Premium - $15.00
+                                </div>
+                                <div class="dropdown-item" data-value="enterprise" data-price="25" onclick="selectVariant(this)">
+                                    Enterprise - $25.00
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="option-label">Quantity</label>
+                    <div class="quantity-group">
+                        <button class="quantity-btn" onclick="decreaseQty()">−</button>
+                        <input type="number" class="quantity-input" id="qtyInput" value="1" min="1" max="10">
+                        <button class="quantity-btn" onclick="increaseQty()">+</button>
+                    </div>
+
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span>Unit Price</span>
+                            <span id="unitPrice">$0.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Quantity</span>
+                            <span id="qtyDisplay">1</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Total</span>
+                            <span id="totalPrice">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-purchase" onclick="confirmPurchase()">Purchase Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="products">
+            <!-- Venmo Account -->
+            <div class="product">
+                <img src="images/products/venmo.png" alt="Venmo" class="product-thumbnail">
+                <div class="product-name">Venmo + Acc Number</div>
+                <div class="product-desc">
+                    <strong>Troubleshooting Login Issues:</strong><br>
+                    1. Restart the App - Fully close the Venmo app and reopen it.<br>
+                    2. Check Your Internet Connection - Make sure you're on stable Wi-Fi or switch between Wi-Fi and cellular to test.<br>
+                    3. Update the App - Go to the App Store and check if there's a Venmo update.<br>
+                    4. Restart Your iPhone - Sometimes a simple reboot clears up weird login errors.<br>
+                    5. Try Logging In on a private Browser (DUCKDUCKGO BEST) - Go to venmo.com and try logging in from there. If that works, the issue is likely with the app itself.<br><br>
+                    <strong>Clear App Cache (iPhone workaround):</strong><br>
+                    iPhones don't let you clear app cache directly, but you can:<br>
+                    Go to Settings > General > iPhone Storage > Venmo<br>
+                    Tap Offload App, then reinstall it<br><br>
+                    <strong>Still Not Working?</strong><br>
+                    Or, Venmo may be blocking your login for security reasons (if there's been too many login attempts, a flagged IP). This method can bypass this error: "Something went wrong. Try again later or contact customer support"<br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                </div>
+                <div class="price-section">
+                    <div class="product-price">Starting from $10</div>
+                    <div class="stock">39 available</div>
+                </div>
+                <div class="supplier-tag">Direct from supplier</div>
+                <div class="badges-container">
+                    <div class="hot-badge">🔥 Hot</div>
+                    <div class="multiple-badge">📦 Multiple</div>
+                </div>
+                <button class="btn" onclick="purchase('Venmo + Acc Number (100% Login) [FRESH]', 10)">Buy Now</button>
+            </div>
+
+            <!-- Cashapp Account -->
+            <div class="product">
+                <img src="images/products/Cashapp.png" alt="CashApp" class="product-thumbnail">
+                <div class="product-name">CashApp FA</div>
+                <div class="product-desc">
+                    After buying you will get Login:pass for <strong>CASHAPP</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                </div>
+                <div class="price-section">
+                    <div class="product-price">Starting from $70</div>
+                    <div class="stock">15 available</div>
+                </div>
+                <div class="supplier-tag">Direct from supplier</div>
+                <div class="badges-container">
+                    <div class="hot-badge">🔥 Hot</div>
+                    <div class="multiple-badge">📦 Multiple</div>
+            </div>
+                <button class="btn" onclick="purchase('CashApp FA', 70)">Buy Now</button>
+            </div>
+
+            <!-- PayPal Account -->
+            <div class="product">
+                <img src="images/products/PayPal.png" alt="PayPal" class="product-thumbnail">
+                <div class="product-name">PayPal FA</div>
+                <div class="product-desc">
+                    After buying you will get Login:pass for <strong>PAYPAL</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                </div>
+                <div class="price-section">
+                    <div class="product-price">Starting from $70</div>
+                    <div class="stock">5 available</div>
+                </div>
+                <div class="supplier-tag">Direct from supplier</div>
+                <div class="badges-container">
+                    <div class="hot-badge">🔥 Hot</div>
+                    <div class="multiple-badge">📦 Multiple</div>
+            </div>
+                <button class="btn" onclick="purchase('PayPal FA', 70)">Buy Now</button>
+            </div>
+
+            <!-- Wise Account -->
+            <div class="product">
+                <img src="images/products/Wise.png" alt="Wise" class="product-thumbnail">
+                <div class="product-name">Wise FA</div>
+                <div class="product-desc">
+                    After buying you will get Login:pass for <strong>WISE</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                </div>
+                <div class="price-section">
+                    <div class="product-price">Starting from $200</div>
+                    <div class="stock">8 available</div>
+                </div>
+                <div class="supplier-tag">Direct from supplier</div>
+                <div class="badges-container">
+                    <div class="hot-badge">🔥 Hot</div>
+                    <div class="multiple-badge">📦 Multiple</div>
+            </div>
+                <button class="btn" onclick="purchase('Wise FA', 200)">Buy Now</button>
+            </div>
+
+            <!-- Stripe FA -->
+            <div class="product">
+                <img src="images/products/Stripe Thumbnail.png" alt="Stripe" class="product-thumbnail">
+                <div class="product-name">Stripe FA</div>
+                <div class="product-desc">After buying you will get Login:pass for <strong>STRIPE</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online</div>
+                <div class="price-section">
+                    <div class="product-price">Starting from $100</div>
+                    <div class="stock">30 available</div>
+                </div>
+                <div class="supplier-tag">Direct from supplier</div>
+                <div class="badges-container">
+                    <div class="hot-badge">🔥 Hot</div>
+                    <div class="multiple-badge">📦 Multiple</div>
+                </div>
+                <button class="btn" onclick="purchase('Stripe FA', 100)">Buy Now</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Cheapest com prices • Bulk orders available • Trusted by 300+ Felons</p>
+            <p>Supplier contact: supply@dumpclub.lol</p>
+            <p>© 2025 DUMPCLUB. Direct supplier.</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentProduct = {};
+        let selectedVariant = { value: 'basic', price: 10 };
+
+
+        function purchase(product, price) {
+            currentProduct = { name: product, price: price };
+            selectedVariant = { value: 'basic', price: price, name: 'Basic' };
+            
+            // Update modal content
+            document.getElementById('purchaseProductName').textContent = product;
+            
+            // Set specific description and stats for each product
+            if (product.includes('Venmo')) {
+                document.getElementById('purchaseProductDesc').innerHTML = `
+                    <strong>Troubleshooting Login Issues:</strong><br>
+                    1. Restart the App - Fully close the Venmo app and reopen it.<br>
+                    2. Check Your Internet Connection - Make sure you're on stable Wi-Fi or switch between Wi-Fi and cellular to test.<br>
+                    3. Update the App - Go to the App Store and check if there's a Venmo update.<br>
+                    4. Restart Your iPhone - Sometimes a simple reboot clears up weird login errors.<br>
+                    5. Try Logging In on a private Browser (DUCKDUCKGO BEST) - Go to venmo.com and try logging in from there. If that works, the issue is likely with the app itself.<br><br>
+                    <strong>Clear App Cache (iPhone workaround):</strong><br>
+                    iPhones don't let you clear app cache directly, but you can:<br>
+                    Go to Settings > General > iPhone Storage > Venmo<br>
+                    Tap Offload App, then reinstall it<br><br>
+                    <strong>Still Not Working?</strong><br>
+                    Or, Venmo may be blocking your login for security reasons (if there's been too many login attempts, a flagged IP). This method can bypass this error: "Something went wrong. Try again later or contact customer support"<br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                `;
+                document.querySelector('.sales-count').textContent = 'Product sold 78 times';
+                document.querySelector('.stars').textContent = '★★★★★';
+                document.querySelector('.rating-text').textContent = '5 Star (23 reviews)';
+            } else if (product.includes('CashApp')) {
+                document.getElementById('purchaseProductDesc').innerHTML = `
+                    After buying you will get Login:pass for <strong>CASHAPP</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                `;
+                document.querySelector('.sales-count').textContent = 'Product sold 252 times';
+                document.querySelector('.stars').textContent = '★★★★★';
+                document.querySelector('.rating-text').textContent = '5 Star (58 reviews)';
+            } else if (product.includes('PayPal')) {
+                document.getElementById('purchaseProductDesc').innerHTML = `
+                    After buying you will get Login:pass for <strong>PAYPAL</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                `;
+                document.querySelector('.sales-count').textContent = 'Product sold 102 times';
+                document.querySelector('.stars').textContent = '★★★★☆';
+                document.querySelector('.rating-text').textContent = '4.5 Star (41 reviews)';
+            } else if (product.includes('Wise')) {
+                document.getElementById('purchaseProductDesc').innerHTML = `
+                    After buying you will get Login:pass for <strong>WISE</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                `;
+                document.querySelector('.sales-count').textContent = 'Product sold 48 times';
+                document.querySelector('.stars').textContent = '★★★★★';
+                document.querySelector('.rating-text').textContent = '5 Star (9 reviews)';
+            } else if (product.includes('Stripe')) {
+                document.getElementById('purchaseProductDesc').innerHTML = `
+                    After buying you will get Login:pass for <strong>STRIPE</strong> verified account and his mail access & number access + any important info + Proxy if needed for the account + account instruction to follow<br><br>
+                    <span style="color: #ffd700;">⭐</span> This account was verified by real people/models it's not hacked or cracked, it's strong full access verified account for your needs <span style="color: #ffd700;">⭐</span><br><br>
+                    <span style="color: #ffd700;">⭐</span> We offer 24h warranty on this product <span style="color: #ffd700;">⭐</span><br><br>
+                    If you have any questions regarding our product please contact us we are 24/7h online
+                `;
+                document.querySelector('.sales-count').textContent = 'Product sold 94 times';
+                document.querySelector('.stars').textContent = '★★★★★';
+                document.querySelector('.rating-text').textContent = '5 Star (24 reviews)';
+            } else {
+            document.getElementById('purchaseProductDesc').textContent = `Premium ${product} account with instant delivery and warranty.`;
+                document.querySelector('.sales-count').textContent = 'Product sold 4 times';
+                document.querySelector('.stars').textContent = '★★★★★';
+                document.querySelector('.rating-text').textContent = '5 (1 review)';
+            }
+            
+            document.getElementById('unitPrice').textContent = `$${price}`;
+            document.getElementById('qtyInput').value = 1;
+            
+            // Update dropdown with product-specific variants
+            updateDropdownVariants(product, price);
+            updateTotal();
+            
+            // Show modal
+            const modal = document.getElementById('purchaseModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateDropdownVariants(product, basePrice) {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const selectedVariantSpan = document.getElementById('selectedVariant');
+            
+            // Clear existing items
+            dropdownMenu.innerHTML = '';
+            
+            let variants;
+            
+            // Special variants for Venmo
+            if (product.includes('Venmo')) {
+                variants = [
+                    { value: '300', price: 70, name: '$300+ Balance' },
+                    { value: '600', price: 100, name: '$600+ Balance' },
+                    { value: '1000', price: 150, name: '$1000+ Balance' },
+                    { value: '1300', price: 170, name: '$1300+ Balance' }
+                ];
+            } else if (product.includes('CashApp')) {
+                variants = [
+                    { value: 'tier2', price: 70, name: 'CashApp Tier 2 | Full access' },
+                    { value: 'ssn_verified', price: 100, name: 'CashApp SSN Verified + Go2Bank linked | Full access' },
+                    { value: 'tier3', price: 130, name: 'Cashapp Tier 3 ID Verified (Bitcoin Enabled)' }
+                ];
+            } else if (product.includes('PayPal')) {
+                variants = [
+                    { value: 'cad_personal', price: 70, name: 'PayPal Personal CAD | Full Access' },
+                    { value: 'eu_personal', price: 70, name: 'PayPal Personal EU | Full Access' },
+                    { value: 'usa_personal', price: 70, name: 'PayPal Personal USA | Full Access' },
+                    { value: 'uk_personal', price: 70, name: 'PayPal Personal UK | Full Access' }
+                ];
+            } else if (product.includes('Wise')) {
+                variants = [
+                    { value: 'eu_vcc', price: 200, name: 'Wise Personal + VCC EU W/ $20 Deposited | Full Access' },
+                    { value: 'uk_vcc', price: 200, name: 'Wise Personal + VCC UK W/ $20 Deposited | Full Access' },
+                    { value: 'us_vcc', price: 230, name: 'Wise Personal + VCC US W/ $20 Deposited | Full Access' },
+                    { value: 'eu_custom', price: 320, name: 'Wise Personal EU W/ Custom name' }
+                ];
+            } else if (product.includes('Stripe')) {
+                variants = [
+                    { value: 'us_business', price: 100, name: 'STRIPE BUSINESS [ US ] PAYMENT PROCESSOR' },
+                    { value: 'uk_personal', price: 100, name: 'STRIPE PERSONAL [ UK ] PAYMENT PROCESSOR' },
+                    { value: 'uk_business', price: 100, name: 'STRIPE BUSINESS [ UK ] PAYMENT PROCESSOR' }
+                ];
+            } else {
+                // Default variants for other products
+                variants = [
+                    { value: 'basic', price: basePrice, name: 'Basic' },
+                    { value: 'premium', price: Math.round(basePrice * 1.5), name: 'Premium' },
+                    { value: 'enterprise', price: Math.round(basePrice * 2), name: 'Enterprise' }
+                ];
+            }
+            
+            variants.forEach((variant, index) => {
+                const item = document.createElement('div');
+                item.className = `dropdown-item ${index === 0 ? 'selected' : ''}`;
+                item.setAttribute('data-value', variant.value);
+                item.setAttribute('data-price', variant.price);
+                if (variant.fixedQty) {
+                    item.setAttribute('data-fixed-qty', variant.fixedQty);
+                }
+                item.onclick = () => selectVariant(item);
+                item.textContent = `${variant.name} - Price: $${variant.price}`;
+                dropdownMenu.appendChild(item);
+            });
+            
+            // Update selected variant
+            selectedVariant = variants[0];
+            selectedVariantSpan.textContent = `${variants[0].name} - Price: $${variants[0].price}`;
+            
+            // Update pricing display
+            updateTotal();
+        }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('variantDropdown');
+            const trigger = dropdown.querySelector('.dropdown-trigger');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            
+            const isOpen = menu.classList.contains('show');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+                menu.closest('.custom-dropdown').querySelector('.dropdown-trigger').classList.remove('active');
+            });
+            
+            if (!isOpen) {
+                menu.classList.add('show');
+                trigger.classList.add('active');
+            }
+        }
+
+        function selectVariant(element) {
+            const value = element.getAttribute('data-value');
+            const price = parseInt(element.getAttribute('data-price'));
+            const text = element.textContent;
+            const fixedQty = element.getAttribute('data-fixed-qty');
+            
+            // Extract variant name from text (everything before " - Price:")
+            const variantName = text.split(' - Price:')[0];
+            
+            // Update selected variant
+            selectedVariant = { 
+                value, 
+                price, 
+                name: variantName,
+                fixedQty: fixedQty ? parseInt(fixedQty) : null 
+            };
+            
+            // Update UI
+            document.getElementById('selectedVariant').textContent = text;
+            
+            // Update selected state
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // Handle fixed quantity for 10X variant
+            const qtyInput = document.getElementById('qtyInput');
+            const quantityGroup = document.querySelector('.quantity-group');
+            
+            if (fixedQty) {
+                qtyInput.value = fixedQty;
+                qtyInput.disabled = true;
+                qtyInput.style.opacity = '0.6';
+                qtyInput.style.cursor = 'not-allowed';
+                quantityGroup.style.opacity = '0.6';
+            } else {
+                qtyInput.disabled = false;
+                qtyInput.style.opacity = '1';
+                qtyInput.style.cursor = 'text';
+                quantityGroup.style.opacity = '1';
+            }
+            
+            // Close dropdown
+            const dropdown = document.getElementById('variantDropdown');
+            const trigger = dropdown.querySelector('.dropdown-trigger');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            
+            menu.classList.remove('show');
+            trigger.classList.remove('active');
+            
+            // Update total price
+            updateTotal();
+        }
+
+        function showGuestInfo() {
+            const modal = document.getElementById('guestModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGuestModal() {
+            const modal = document.getElementById('guestModal');
+            modal.classList.add('hide');
+            setTimeout(() => {
+                modal.classList.remove('show', 'hide');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function closePurchaseModal() {
+            const modal = document.getElementById('purchaseModal');
+            modal.classList.add('hide');
+            setTimeout(() => {
+                modal.classList.remove('show', 'hide');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function decreaseQty() {
+            const input = document.getElementById('qtyInput');
+            if (input.disabled) return; // Don't allow changes for fixed quantity variants
+            
+            if (input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+                updateTotal();
+            }
+        }
+
+        function increaseQty() {
+            const input = document.getElementById('qtyInput');
+            if (input.disabled) return; // Don't allow changes for fixed quantity variants
+            
+            if (input.value < 10) {
+                input.value = parseInt(input.value) + 1;
+                updateTotal();
+            }
+        }
+
+        function updateTotal() {
+            const qty = selectedVariant.fixedQty || parseInt(document.getElementById('qtyInput').value) || 1;
+            const unitPrice = selectedVariant.price || 0;
+            const total = qty * unitPrice;
+            
+            document.getElementById('qtyDisplay').textContent = qty;
+            document.getElementById('unitPrice').textContent = `$${unitPrice.toFixed(2)}`;
+            document.getElementById('totalPrice').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function confirmPurchase() {
+            // Show loading screen
+            const purchaseBtn = document.querySelector('.btn-purchase');
+            const originalText = purchaseBtn.textContent;
+            purchaseBtn.innerHTML = '<div class="loading-spinner-small"></div> Processing...';
+            purchaseBtn.disabled = true;
+            
+            // Simulate processing time (3-5 seconds)
+            setTimeout(() => {
+                // Close purchase modal and open checkout
+                closePurchaseModal();
+                openCheckout();
+                
+                // Reset button
+                purchaseBtn.textContent = originalText;
+                purchaseBtn.disabled = false;
+            }, Math.random() * 2000 + 3000); // Random time between 3-5 seconds
+        }
+
+        function openCheckout() {
+            // Update checkout details
+            document.getElementById('checkoutProductName').textContent = currentProduct.name;
+            document.getElementById('checkoutVariant').textContent = selectedVariant.name;
+            document.getElementById('checkoutPrice').textContent = `$${selectedVariant.price.toFixed(2)}`;
+            
+            const qty = selectedVariant.fixedQty || document.getElementById('qtyInput').value;
+            const total = selectedVariant.price * qty;
+            document.getElementById('checkoutTotal').textContent = `$${total.toFixed(2)}`;
+            
+            // Show checkout modal
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function processPayment() {
+            // Close checkout modal and open crypto selection
+            closeCheckoutModal();
+            openCryptoModal();
+        }
+
+        function openCryptoModal() {
+            // Keep the same total price (no discount applied to display)
+            const total = document.getElementById('checkoutTotal').textContent;
+            document.getElementById('cryptoAmount').textContent = `${total} USD`;
+            
+            // Show crypto modal
+            const modal = document.getElementById('cryptoModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Load real-time crypto prices
+            setTimeout(() => {
+                loadCryptoPrices();
+            }, 100);
+        }
+
+        function closeCryptoModal() {
+            const modal = document.getElementById('cryptoModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+            
+            // Reset selection
+            document.querySelectorAll('.crypto-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById('confirmCryptoBtn').disabled = true;
+            
+        }
+
+        function confirmCryptoSelection() {
+            const selectedCrypto = document.querySelector('.crypto-option.selected');
+            if (selectedCrypto) {
+                // Show loading screen
+                const confirmBtn = document.getElementById('confirmCryptoBtn');
+                const originalText = confirmBtn.textContent;
+                confirmBtn.innerHTML = '<div class="loading-spinner-small"></div> Processing...';
+                confirmBtn.disabled = true;
+                
+                // Simulate processing time (3-5 seconds)
+                setTimeout(() => {
+                    const cryptoSymbol = selectedCrypto.dataset.crypto;
+                    const cryptoName = selectedCrypto.querySelector('.crypto-name').textContent;
+                    const cryptoAmount = selectedCrypto.querySelector('.crypto-amount-crypto').textContent;
+                    const cryptoIcon = selectedCrypto.querySelector('.crypto-icon').textContent;
+                    
+                    // Close crypto selection modal
+                    closeCryptoModal();
+                    
+                    // Open payment modal
+                    openCryptoPaymentModal(cryptoSymbol, cryptoName, cryptoAmount, cryptoIcon);
+                    
+                    // Reset button
+                    confirmBtn.textContent = originalText;
+                    confirmBtn.disabled = false;
+                }, Math.random() * 2000 + 3000); // Random time between 3-5 seconds
+            }
+        }
+
+        // Global variable to store current USD amount
+        let currentUsdAmount = 0;
+        let paymentTimer = null;
+        let blockchainTimer = null;
+
+        function openCryptoPaymentModal(cryptoSymbol, cryptoName, cryptoAmount, cryptoIcon) {
+            // Update payment modal content
+            document.getElementById('cryptoPaymentAmount').textContent = document.getElementById('checkoutTotal').textContent + ' USD';
+            document.getElementById('cryptoPaymentSymbol').textContent = cryptoSymbol;
+            document.getElementById('cryptoPaymentName').textContent = cryptoName;
+            document.getElementById('paymentAmountCrypto').textContent = cryptoAmount;
+            
+            // Set QR code based on selected crypto
+            const qrCodes = {
+                'SOL': 'images/qr-codes/Solana QR Code.png',
+                'BTC': 'images/qr-codes/Bitcoin QR Code.png',
+                'LTC': 'images/qr-codes/Litecoin QR Code.png',
+                'ETH': 'images/qr-codes/Ethereum QR Code.png'
+            };
+            document.getElementById('cryptoQrCode').src = qrCodes[cryptoSymbol];
+            
+            // Set wallet address based on selected crypto
+            const walletAddresses = {
+                'SOL': 'J9vUN3X8t5ELjoMLCPszwrnMCDsLhXAbp33tRCm3kssr',
+                'BTC': 'bc1qrg4n9hd86ptmflcjfcqd5nkuhwject0rp6lvmx',
+                'LTC': 'LWTDW5nZd14DumENnmXiDSwnijPh4Mzj4V',
+                'ETH': '0x9825f22197a0159af6fE8064e438608155EeF01A'
+            };
+            document.getElementById('walletAddress').textContent = walletAddresses[cryptoSymbol];
+            
+            // Start payment timer (1 hour)
+            startPaymentTimer();
+            
+            // Start blockchain countdown
+            startBlockchainCountdown();
+            
+            // Show payment modal
+            const modal = document.getElementById('cryptoPaymentModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCryptoPaymentModal() {
+            const modal = document.getElementById('cryptoPaymentModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+            
+            // Stop timers
+            if (paymentTimer) {
+                clearInterval(paymentTimer);
+                paymentTimer = null;
+            }
+            if (blockchainTimer) {
+                clearInterval(blockchainTimer);
+                blockchainTimer = null;
+            }
+        }
+
+        function startPaymentTimer() {
+            let timeLeft = 60 * 60; // 1 hour in seconds
+            
+            function updateTimer() {
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('paymentTimer').textContent = timeString;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(paymentTimer);
+                    alert('Payment time expired. Please start a new order.');
+                    closeCryptoPaymentModal();
+                } else {
+                    timeLeft--;
+                }
+            }
+            
+            updateTimer(); // Initial call
+            paymentTimer = setInterval(updateTimer, 1000);
+        }
+
+        function startBlockchainCountdown() {
+            let countdown = 20;
+            const blockchainText = document.getElementById('blockchainText');
+            const blockchainCountdown = document.getElementById('blockchainCountdown');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            function updateBlockchainStatus() {
+                if (countdown > 0) {
+                    // Show countdown
+                    blockchainText.style.display = 'block';
+                    loadingSpinner.style.display = 'none';
+                    blockchainCountdown.textContent = countdown;
+                    countdown--;
+                } else {
+                    // Show loading animation
+                    blockchainText.style.display = 'none';
+                    loadingSpinner.style.display = 'flex';
+                    
+                    // After 2 seconds of loading, reset countdown
+                    setTimeout(() => {
+                        countdown = 20;
+                        blockchainText.style.display = 'block';
+                        loadingSpinner.style.display = 'none';
+                        blockchainCountdown.textContent = countdown;
+                    }, 2000);
+                }
+            }
+            
+            updateBlockchainStatus(); // Initial call
+            blockchainTimer = setInterval(updateBlockchainStatus, 1000);
+        }
+
+
+        async function loadCryptoPrices() {
+            try {
+                // Add loading indicators
+                document.querySelectorAll('.crypto-option').forEach(option => {
+                    option.classList.add('loading');
+                });
+
+                // Get the current USD amount
+                const total = document.getElementById('checkoutTotal').textContent;
+                currentUsdAmount = parseFloat(total.replace('$', ''));
+                
+                // Apply 5% discount for crypto payments
+                const discountedAmount = currentUsdAmount * 0.95;
+                
+                console.log('🔍 DEBUG: Original total:', total);
+                console.log('🔍 DEBUG: Parsed USD amount:', currentUsdAmount);
+                console.log('🔍 DEBUG: Discounted amount (5% off):', discountedAmount);
+                
+                // Try multiple reliable APIs from public-apis repository
+                let prices = {};
+                
+                // API 1: FX Rates API (Free, real-time crypto rates)
+                try {
+                    const response = await fetch(`https://api.fxratesapi.com/latest`);
+                    const data = await response.json();
+                    
+                    if (data && data.success && data.rates) {
+                        // Convert rates to USD prices (rates are in USD per crypto)
+                        prices = {
+                            'BTC': 1 / data.rates.BTC, // Convert from BTC per USD to USD per BTC
+                            'LTC': 1 / data.rates.LTC, // Convert from LTC per USD to USD per LTC
+                            'ETH': 1 / data.rates.ETH, // Convert from ETH per USD to USD per ETH
+                            'SOL': 1 / data.rates.SOL  // Convert from SOL per USD to USD per SOL
+                        };
+                        console.log('✅ FX Rates API loaded:', prices);
+                        console.log('🔍 Raw rates from API:', {
+                            'BTC': data.rates.BTC,
+                            'LTC': data.rates.LTC,
+                            'ETH': data.rates.ETH,
+                            'SOL': data.rates.SOL
+                        });
+                    }
+                } catch (e) {
+                    console.log('❌ FX Rates API failed:', e.message);
+                }
+                
+                // API 2: CoinGecko (Free, no API key required)
+                if (!prices.BTC) {
+                    try {
+                        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,litecoin,ethereum,solana&vs_currencies=usd`);
+                        const data = await response.json();
+                        
+                        if (data && data.bitcoin) {
+                            prices = {
+                                'BTC': data.bitcoin.usd,
+                                'LTC': data.litecoin.usd,
+                                'ETH': data.ethereum.usd,
+                                'SOL': data.solana.usd
+                            };
+                            console.log('✅ CoinGecko API loaded:', prices);
+                        }
+                    } catch (e) {
+                        console.log('❌ CoinGecko failed:', e.message);
+                    }
+                }
+                
+                // API 3: CoinCap (Free, no API key required)
+                if (!prices.BTC) {
+                    try {
+                        const response = await fetch(`https://api.coincap.io/v2/assets?ids=bitcoin,litecoin,ethereum,solana`);
+                        const data = await response.json();
+                        
+                        if (data && data.data) {
+                            prices = {};
+                            data.data.forEach(asset => {
+                                const symbol = asset.symbol;
+                                prices[symbol] = parseFloat(asset.priceUsd);
+                            });
+                            console.log('✅ CoinCap API loaded:', prices);
+                        }
+                    } catch (e) {
+                        console.log('❌ CoinCap failed:', e.message);
+                    }
+                }
+                
+                // API 4: CryptoCompare (Free tier available)
+                if (!prices.BTC) {
+                    try {
+                        const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,LTC,ETH,SOL&tsyms=USD`);
+                        const data = await response.json();
+                        
+                        if (data && data.BTC) {
+                            prices = {
+                                'BTC': data.BTC.USD,
+                                'LTC': data.LTC.USD,
+                                'ETH': data.ETH.USD,
+                                'SOL': data.SOL.USD
+                            };
+                            console.log('✅ CryptoCompare API loaded:', prices);
+                        }
+                    } catch (e) {
+                        console.log('❌ CryptoCompare failed:', e.message);
+                    }
+                }
+                
+                // API 5: Binance (Free, no API key required)
+                if (!prices.BTC) {
+                    try {
+                        const response = await fetch(`https://api.binance.com/api/v3/ticker/price?symbols=["BTCUSDT","LTCUSDT","ETHUSDT","SOLUSDT"]`);
+                        const data = await response.json();
+                        
+                        if (data && Array.isArray(data)) {
+                            prices = {};
+                            data.forEach(item => {
+                                const symbol = item.symbol.replace('USDT', '');
+                                prices[symbol] = parseFloat(item.price);
+                            });
+                            console.log('✅ Binance API loaded:', prices);
+                        }
+                    } catch (e) {
+                        console.log('❌ Binance failed:', e.message);
+                    }
+                }
+                
+                // Final fallback prices if all APIs fail
+                if (!prices.BTC) {
+                    prices = {
+                        'BTC': 45000,
+                        'LTC': 70,
+                        'ETH': 2500,
+                        'SOL': 100
+                    };
+                    console.log('⚠️ Using fallback prices:', prices);
+                }
+
+                // Update each crypto option with calculated amounts
+                document.querySelectorAll('.crypto-option').forEach(option => {
+                    const symbol = option.dataset.crypto;
+                    const price = prices[symbol] || 1;
+                    const cryptoAmount = (discountedAmount / price).toFixed(8);
+                    
+                    // Update the crypto amount display
+                    const amountElement = option.querySelector('.crypto-amount-crypto');
+                    amountElement.textContent = `${cryptoAmount} ${symbol}`;
+                    
+                    // Remove loading indicator
+                    option.classList.remove('loading');
+                    
+                    console.log(`💰 ${symbol}: $${price} USD per ${symbol}`);
+                    console.log(`💰 ${symbol}: $${discountedAmount} USD ÷ $${price} = ${cryptoAmount} ${symbol}`);
+                    console.log(`💰 ${symbol}: Final amount: ${cryptoAmount} ${symbol}`);
+                });
+
+            } catch (error) {
+                console.error('💥 Error loading crypto prices:', error);
+                
+                // Emergency fallback - use static prices
+                const total = document.getElementById('checkoutTotal').textContent;
+                currentUsdAmount = parseFloat(total.replace('$', ''));
+                const discountedAmount = currentUsdAmount * 0.95;
+                
+                const fallbackPrices = {
+                    'BTC': 45000,
+                    'LTC': 70,
+                    'ETH': 2500,
+                    'SOL': 100
+                };
+                
+                document.querySelectorAll('.crypto-option').forEach(option => {
+                    const symbol = option.dataset.crypto;
+                    const price = fallbackPrices[symbol] || 1;
+                    const cryptoAmount = (discountedAmount / price).toFixed(8);
+                    const amountElement = option.querySelector('.crypto-amount-crypto');
+                    amountElement.textContent = `${cryptoAmount} ${symbol}`;
+                    option.classList.remove('loading');
+                });
+            }
+        }
+
+        // Crypto selection functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click handlers for crypto options
+            document.querySelectorAll('.crypto-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove previous selection
+                    document.querySelectorAll('.crypto-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selection to clicked option
+                    option.classList.add('selected');
+                    
+                    
+                    // Enable confirm button
+                    document.getElementById('confirmCryptoBtn').disabled = false;
+                });
+            });
+
+            // Add search functionality
+            const searchInput = document.getElementById('cryptoSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    document.querySelectorAll('.crypto-option').forEach(option => {
+                        const symbol = option.querySelector('.crypto-symbol').textContent.toLowerCase();
+                        const name = option.querySelector('.crypto-name').textContent.toLowerCase();
+                        
+                        if (symbol.includes(searchTerm) || name.includes(searchTerm)) {
+                            option.style.display = 'flex';
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+
+        // Update quantity on input change
+        document.addEventListener('DOMContentLoaded', () => {
+            const qtyInput = document.getElementById('qtyInput');
+            if (qtyInput) {
+                qtyInput.addEventListener('input', updateTotal);
+            }
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'guestModal') {
+                closeGuestModal();
+            }
+            if (e.target.id === 'purchaseModal') {
+                closePurchaseModal();
+            }
+            if (e.target.id === 'checkoutModal') {
+                closeCheckoutModal();
+            }
+            if (e.target.id === 'cryptoModal') {
+                closeCryptoModal();
+            }
+            if (e.target.id === 'cryptoPaymentModal') {
+                closeCryptoPaymentModal();
+            }
+            
+            // Close dropdown when clicking outside
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                    menu.classList.remove('show');
+                    menu.closest('.custom-dropdown').querySelector('.dropdown-trigger').classList.remove('active');
+                });
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeGuestModal();
+                closePurchaseModal();
+                closeCheckoutModal();
+                closeCryptoModal();
+                closeCryptoPaymentModal();
+                
+                // Close dropdown
+                document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                    menu.classList.remove('show');
+                    menu.closest('.custom-dropdown').querySelector('.dropdown-trigger').classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
