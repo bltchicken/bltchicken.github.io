@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>DIGITAL ACCOUNTS // SHOP</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/logos/DC Logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logos/DC Logo.png">
+    <link rel="apple-touch-icon" href="images/logos/DC Logo.png">
     
     <!-- San Francisco Pro Fonts -->
     <style>
@@ -487,6 +492,61 @@
             }
         }
 
+        .email-section {
+            margin-bottom: 24px;
+        }
+
+        .email-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .email-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .email-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #4c40e0;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 2px rgba(76, 64, 224, 0.2);
+        }
+
+        .email-input.error {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.05);
+            box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+        }
+
+        .email-note {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin: 0;
+            line-height: 1.4;
+        }
+
         .payment-section h3 {
             font-size: 16px;
             font-weight: 600;
@@ -513,6 +573,20 @@
         }
 
         @media (max-width: 768px) {
+            .email-section h3 {
+                font-size: 15px;
+                margin-bottom: 12px;
+            }
+            
+            .email-input {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            
+            .email-note {
+                font-size: 11px;
+            }
+            
             .payment-section h3 {
                 font-size: 15px;
                 margin-bottom: 10px;
@@ -524,6 +598,20 @@
         }
 
         @media (max-width: 480px) {
+            .email-section h3 {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+            
+            .email-input {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .email-note {
+                font-size: 10px;
+            }
+            
             .payment-section h3 {
                 font-size: 14px;
                 margin-bottom: 8px;
@@ -1770,7 +1858,267 @@
             margin: 8px 0;
         }
 
-        /* Additional mobile optimizations */
+        /* Enhanced Mobile Styles */
+        @media (max-width: 768px) {
+            /* Header improvements */
+            .logo {
+                max-width: 120px;
+                height: auto;
+            }
+            
+            .tagline {
+                font-size: 14px;
+                margin: 8px 0;
+                line-height: 1.4;
+            }
+            
+            .marquee-text {
+                font-size: 11px;
+                padding: 8px 0;
+            }
+            
+            /* Product grid mobile optimization */
+            .products {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                padding: 0 10px;
+            }
+            
+            .product-card {
+                margin: 0;
+                padding: 16px;
+                border-radius: 12px;
+            }
+            
+            .product-thumbnail {
+                max-width: 200px;
+                height: 200px;
+                margin: 0 auto 12px auto;
+            }
+            
+            .product-name {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+            
+            .product-price {
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 13px;
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+            }
+            
+            /* Modal improvements */
+            .modal-content {
+                width: 95%;
+                max-height: 95vh;
+                margin: 10px auto;
+                border-radius: 12px;
+            }
+            
+            .modal-header {
+                padding: 20px 16px 16px;
+            }
+            
+            .modal-title {
+                font-size: 18px;
+                line-height: 1.3;
+            }
+            
+            .modal-body {
+                padding: 16px;
+                max-height: calc(95vh - 200px);
+            }
+            
+            .modal-footer {
+                padding: 16px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn-purchase {
+                width: 100%;
+                padding: 14px 20px;
+                font-size: 16px;
+            }
+            
+            /* Checkout mobile optimization */
+            .checkout-content {
+                width: 95%;
+                max-width: 95%;
+                margin: 10px auto;
+            }
+            
+            .checkout-header {
+                padding: 16px;
+                text-align: center;
+            }
+            
+            .checkout-title {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+            
+            .order-summary {
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+            
+            .payment-options {
+                gap: 8px;
+            }
+            
+            .payment-option {
+                padding: 12px;
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            
+            .payment-icon {
+                width: 40px;
+                height: 40px;
+                margin: 0 auto;
+            }
+            
+            .payment-info {
+                text-align: center;
+            }
+            
+            .payment-name {
+                font-size: 14px;
+            }
+            
+            .payment-discount {
+                font-size: 11px;
+            }
+            
+            /* Crypto modal mobile */
+            .crypto-list {
+                gap: 8px;
+            }
+            
+            .crypto-option {
+                padding: 12px;
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            
+            .crypto-icon {
+                font-size: 24px;
+            }
+            
+            .crypto-symbol {
+                font-size: 16px;
+            }
+            
+            .crypto-name {
+                font-size: 12px;
+            }
+            
+            .crypto-amount-crypto {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            
+            .crypto-time-badge {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
+            
+            /* Crypto payment modal mobile */
+            .crypto-payment-content {
+                width: 95%;
+                max-height: 95vh;
+                margin: 10px auto;
+            }
+            
+            .crypto-payment-header {
+                padding: 16px;
+            }
+            
+            .crypto-payment-title {
+                font-size: 20px;
+            }
+            
+            .crypto-payment-amount {
+                font-size: 16px;
+            }
+            
+            .crypto-payment-body {
+                padding: 16px;
+            }
+            
+            .selected-crypto-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+                padding: 12px;
+            }
+            
+            .crypto-qr-container {
+                width: 180px;
+                height: 180px;
+                margin: 0 auto;
+            }
+            
+            .payment-amount-crypto {
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+            
+            .wallet-address {
+                font-size: 11px;
+                padding: 10px;
+                margin-bottom: 12px;
+            }
+            
+            .blockchain-monitoring {
+                padding: 10px;
+                margin: 16px 0;
+            }
+            
+            .blockchain-monitoring p {
+                font-size: 13px;
+            }
+            
+            .terms-section {
+                padding: 12px;
+            }
+            
+            .terms-section h4 {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            
+            .terms-section ul {
+                font-size: 12px;
+                padding-left: 16px;
+            }
+            
+            .terms-section li {
+                margin-bottom: 4px;
+            }
+            
+            .crypto-payment-footer {
+                padding: 16px;
+                flex-direction: column;
+            }
+            
+            .crypto-payment-footer .btn {
+                width: 100%;
+                padding: 12px 20px;
+            }
+        }
+
+        /* Extra small mobile devices */
         @media (max-width: 480px) {
             header {
                 padding: 20px 0 20px;
@@ -1778,12 +2126,94 @@
             }
             
             .logo {
-                max-width: 120px;
+                max-width: 100px;
+            }
+            
+            .tagline {
+                font-size: 12px;
             }
             
             .marquee-text {
                 font-size: 10px;
                 letter-spacing: 1px;
+            }
+            
+            .product-thumbnail {
+                max-width: 160px;
+                height: 160px;
+            }
+            
+            .product-name {
+                font-size: 14px;
+            }
+            
+            .product-price {
+                font-size: 13px;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+            
+            .modal-content {
+                width: 98%;
+                margin: 5px auto;
+            }
+            
+            .modal-header {
+                padding: 16px 12px 12px;
+            }
+            
+            .modal-title {
+                font-size: 16px;
+            }
+            
+            .modal-body {
+                padding: 12px;
+            }
+            
+            .crypto-qr-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .payment-amount-crypto {
+                font-size: 18px;
+            }
+            
+            .wallet-address {
+                font-size: 10px;
+                padding: 8px;
+            }
+        }
+
+        /* Ultra small devices */
+        @media (max-width: 375px) {
+            .container {
+                padding: 10px 8px;
+            }
+            
+            .logo {
+                max-width: 90px;
+            }
+            
+            .tagline {
+                font-size: 11px;
+            }
+            
+            .marquee-text {
+                font-size: 9px;
+            }
+            
+            .product-thumbnail {
+                max-width: 140px;
+                height: 140px;
+            }
+            
+            .crypto-qr-container {
+                width: 130px;
+                height: 130px;
             }
         }
     </style>
@@ -1861,6 +2291,14 @@
                         <div class="order-total">
                             <span>Total:</span>
                             <span id="checkoutTotal">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="email-section">
+                        <h3>Receive Your Order</h3>
+                        <div class="email-input-container">
+                            <input type="email" id="customerEmail" placeholder="Enter your email address" class="email-input" required>
+                            <p class="email-note">We'll send your account details to this email after payment confirmation</p>
                         </div>
                     </div>
                     
@@ -2135,7 +2573,7 @@
                     <div class="product-price">Starting from $70</div>
                     <div class="stock">39 available</div>
                 </div>
-                <div class="supplier-tag">Direct from supplier</div>
+                <div class="supplier-tag">Last updated: October 18, 2025</div>
                 <div class="badges-container">
                     <div class="hot-badge">🔥 Hot</div>
                     <div class="multiple-badge">📦 Multiple</div>
@@ -2157,7 +2595,7 @@
                     <div class="product-price">Starting from $70</div>
                     <div class="stock">15 available</div>
                 </div>
-                <div class="supplier-tag">Direct from supplier</div>
+                <div class="supplier-tag">Last updated: October 18, 2025</div>
                 <div class="badges-container">
                     <div class="hot-badge">🔥 Hot</div>
                     <div class="multiple-badge">📦 Multiple</div>
@@ -2179,7 +2617,7 @@
                     <div class="product-price">Starting from $70</div>
                     <div class="stock">5 available</div>
                 </div>
-                <div class="supplier-tag">Direct from supplier</div>
+                <div class="supplier-tag">Last updated: October 18, 2025</div>
                 <div class="badges-container">
                     <div class="hot-badge">🔥 Hot</div>
                     <div class="multiple-badge">📦 Multiple</div>
@@ -2201,7 +2639,7 @@
                     <div class="product-price">Starting from $200</div>
                     <div class="stock">8 available</div>
                 </div>
-                <div class="supplier-tag">Direct from supplier</div>
+                <div class="supplier-tag">Last updated: October 18, 2025</div>
                 <div class="badges-container">
                     <div class="hot-badge">🔥 Hot</div>
                     <div class="multiple-badge">📦 Multiple</div>
@@ -2221,7 +2659,7 @@
                     <div class="product-price">Starting from $100</div>
                     <div class="stock">30 available</div>
                 </div>
-                <div class="supplier-tag">Direct from supplier</div>
+                <div class="supplier-tag">Last updated: October 18, 2025</div>
                 <div class="badges-container">
                     <div class="hot-badge">🔥 Hot</div>
                     <div class="multiple-badge">📦 Multiple</div>
@@ -2233,7 +2671,7 @@
         <footer>
             <p>Cheapest com prices • Bulk orders available • Trusted by 300+ Felons</p>
             <p>Supplier contact: supply@dumpclub.lol</p>
-            <p>© 2025 DUMPCLUB. Direct supplier.</p>
+            <p>© 2025 DUMPCLUB. Last updated: October 18, 2025</p>
         </footer>
     </div>
 
@@ -2572,9 +3010,84 @@
         }
 
         function processPayment() {
-            // Close checkout modal and open crypto selection
+            // Validate email before proceeding
+            const emailInput = document.getElementById('customerEmail');
+            const email = emailInput.value.trim();
+            
+            // Check if email is empty
+            if (!email) {
+                showEmailError('Please enter your email address');
+                return;
+            }
+            
+            // Check if email is valid
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showEmailError('Please enter a valid email address');
+                return;
+            }
+            
+            // Email is valid, proceed to payment
             closeCheckoutModal();
             openCryptoModal();
+        }
+        
+        function showEmailError(message) {
+            // Remove any existing error message
+            const existingError = document.querySelector('.email-error');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // Create error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'email-error';
+            errorDiv.textContent = message;
+            errorDiv.style.cssText = `
+                color: #ff6b6b;
+                font-size: 12px;
+                text-align: center;
+                margin-top: 8px;
+                padding: 8px;
+                background: rgba(255, 107, 107, 0.1);
+                border: 1px solid rgba(255, 107, 107, 0.3);
+                border-radius: 6px;
+                animation: shake 0.5s ease-in-out;
+            `;
+            
+            // Add shake animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    25% { transform: translateX(-5px); }
+                    75% { transform: translateX(5px); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Insert error message after email input
+            const emailContainer = document.querySelector('.email-input-container');
+            emailContainer.appendChild(errorDiv);
+            
+            // Add error class to input field
+            const emailInput = document.getElementById('customerEmail');
+            emailInput.classList.add('error');
+            
+            // Focus on email input
+            emailInput.focus();
+            
+            // Remove error class when user starts typing
+            emailInput.addEventListener('input', function() {
+                this.classList.remove('error');
+            }, { once: true });
+            
+            // Remove error after 5 seconds
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.remove();
+                }
+            }, 5000);
         }
 
         function openCryptoModal() {
