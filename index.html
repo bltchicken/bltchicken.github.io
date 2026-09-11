@@ -114,6 +114,15 @@
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
 
+  if ('mediaSession' in navigator && 'MediaMetadata' in window) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: ' ',
+      artist: ' ',
+      album: ' ',
+      artwork: [{src:'./app-icon-512.png',sizes:'512x512',type:'image/png'}]
+    });
+  }
+
   const feed = document.querySelector('.feed');
   const template = feed.firstElementChild.cloneNode(true);
   const rewardLayer = document.querySelector('.reward-layer');
