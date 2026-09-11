@@ -1,6 +1,6 @@
 {
-  "name": "FYP Rewards Demo",
-  "short_name": "FYP Rewards",
+  "name": "Cashly Rewards",
+  "short_name": "Cashly Rewards"",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
