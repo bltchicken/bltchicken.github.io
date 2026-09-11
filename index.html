@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Cashly">
+<meta name="apple-mobile-web-app-title" content="Cashly Rewards">
 <link rel="manifest" href="./cashly.webmanifest?v=3">
 <link rel="apple-touch-icon" href="./cashly-rewards.png">
 <title>Cashly</title>
@@ -261,7 +261,7 @@
     try {
       const registration = await navigator.serviceWorker.ready;
       await registration.showNotification(title, {
-        body: 'Demo payment received',
+        body: 'Payment received · Demo',
         icon: './cashly-rewards.png',
         badge: './cashly-rewards.png',
         tag: 'cashout-complete',
@@ -270,7 +270,7 @@
       });
       return true;
     } catch (_) {
-      new Notification(title, {body:'Demo payment received',icon:'./cashly-rewards.png'});
+      new Notification(title, {body:'Payment received · Demo',icon:'./cashly-rewards.png'});
       return true;
     }
   }
