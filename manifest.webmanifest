@@ -8,16 +8,10 @@
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "./app-icon-192.png",
-      "sizes": "192x192",
+      "src": "./cashly-rewards.png",
+      "sizes": "400x400",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./app-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "id": "./index.html"
