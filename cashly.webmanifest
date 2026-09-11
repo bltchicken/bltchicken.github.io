@@ -1,7 +1,7 @@
 {
-  "name": "Cashly",
-  "short_name": "Cashly",
-  "start_url": "./index.html?app=cashly-v3",
+  "name": "Cashly Rewards",
+  "short_name": "Cashly Rewards",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#000000",
@@ -14,5 +14,5 @@
       "purpose": "any maskable"
     }
   ],
-  "id": "./cashly-app-v3"
+  "id": "./cashly-app-v2"
 }
