@@ -1,6 +1,6 @@
 {
-  "name": "Cashly Rewards",
-  "short_name": "Cashly Rewards",
+  "name": "Cashly App",
+  "short_name": "Cashly",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -14,5 +14,5 @@
       "purpose": "any maskable"
     }
   ],
-  "id": "./cashly-app-v2"
+  "id": "./cashly-rewards-v6"
 }
